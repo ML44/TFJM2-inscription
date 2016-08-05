@@ -1,0 +1,9 @@
+  	
+Bonjour  Equipe {{ neq }} !
+
+Nous avons la tristesse de vous informer que votre inscription a été refusée par les organisateurs du tournoi de {{ tournoi }}.
+
+Merci de votre compréhension !
+
+- Les organisateurs du TFJM2 -
+

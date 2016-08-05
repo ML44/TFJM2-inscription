@@ -1,0 +1,194 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li class="active"><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+
+<h2>Solutions écrites</h2>
+Voici les solutions écrites des différentes équipes des sessions précédentes du TFJM.
+
+Edition 2014
+
+Centre Galois: Problème 1, Problème 2, Problème 5, Problème 6, Problème 8
+
+Fermat: Problème 1, Problème 7, Problème 8, Problème 9
+
+GIF: Problème 2, Problème 3, Problème 5, Problème 6, Problème 8
+
+Henri IV: Problème 1, Problème 2, Problème 4, Problème 6, Problème 7, Problème 8
+
+Jean Du Sud: Problème 1, Problème 2, Problème 4, Problème 8, Problème 9
+
+Les 11235 Lapins: Problème 1, Problème 6, Problème 7, Problème 8
+
+Les Individus Lambda: Problème 1, Problème 4, Problème 5, Problème 8
+
+Les irréductibles: Problème 1, Problème 2, Problème 6, Problème 8, Problème 9
+
+Lili la Tigresse: Problème 1, Problème 3, Problème 7, Problème 8, Problème 9
+
+Lycée Blaise Pascal: Problème 1, Problème 2, Problème 6, Problème 7, Problème 8
+
+Dijon - Saint Germain: Problème 1, Problème 2, Problème 6, Problème 7, Problème 8, Problème 9
+
+Men in Cube: Problème 1, Problème 2, Problème 4, Problème 7, Problème 8, Problème 9
+
+PPCM Sainte Ursule: Problème 1, Problème 2, Problème 7, Problème 8
+
+Seize: Problème 1, Problème 2, Problème 3, Problème 6, Problème 8, Problème 9
+
+Strasbourg: Problème 1, Problème 2, Problème 5, Problème 6, Problème 7, Problème 8, Problème 9
+
+Tours-Descartes: Problème 1, Problème 4, Problème 8,Problème 9
+
+Trivial: Problème 1, Problème 2, Problème 6, Problème 7, Problème 8, Problème 9
+
+TS1 LLG: Problème 1, Problème 2, Problème 4, Problème 6, Problème 7, Problème 8
+
+Edition 2013
+
+Charlemagne: Problème 1, Problème 5, Problème 8, Problème 9, Problème 10, Problème 11
+
+JeanDuSud: Problème 1, Problème 3, Problème 4, Problème 6, Problème 8
+
+LI(X): Problème 1, Problème 4 (Annexe), Problème 5, Problème 6, Problème 8, Problème 9, Problème 11
+
+Lili La Tigresse: Problème 1, Problème 4, Problème 6, Problème 8
+
+Notre-Dame-Saint-Sigisbert: Problème 1, Problème 3, Problème 4, Problème 5, Problème 6
+
+Orsay 1: Problème 1 (Figures: 1, 2, 3, 4), Problème 3 (Figures), Problème 5 (Pages 1, 2, 3, 4) (Figures 1, 2, 3, 4), Problème 6
+
+Orsay 2: Problème 1, Problème 4, Problème 5, Problème 6, Problème 9, Problème 10
+
+Orsay 3: Problème 1, Problème 4, Problème 5, Problème 6, Problème 7, Problème 11
+
+Orsay 4: Problème 1, Problème 4, Problème 5, Problème 6, Problème 7
+
+Saint-Vincent: Problème 1, Problème 3, Problème 4, Problème 6, Problème 9
+
+Strasbourg: Problème 1, Problème 2, Problème 3, Problème 4, Problème 6, Problème 11
+
+TS-Descartes: Problème 1, Problème 5, Problème 6, Problème 8, Problème 11
+
+Edition 2012
+
+
+Charlemagne: Problème 1, Problème 2, Problème 3, Problème 4, Problème 5
+
+Descartes: Problème 1, Problème 2, Problème 3, Problème 4, Problème 5
+
+Equipe mixte: Problème 4, Problème 5 (annexe)
+
+Hoche: Problème 1, Problème 2, Problème 3, Problème 4, Problème 5
+
+LLG: Problème 1, Problème 2, Problème 3, Problème 4
+
+La Mennais: Problème 1, Problème 2, Problème 3 (annexe), Problème 4, Problème 5
+
+Limite plus l'infini: Problème 1, Problème 2, Problème 3, Problème 4, Problème 5
+
+Orsay: Problème 1, Problème 2, Problème 3 (figures), Problème 4, Problème 5
+
+Saint-Germain: Problème 1, Problème 2, Problème 4, Problème 5
+
+Edition 2011
+
+
+Hoche: Problème 2, Problème 9
+
+Louis-le-Grand: Problème 1, Problème 9
+
+Orsay: Problème 1, Problème 2, Problème 5, Problème 6, Problème 8 (présentations: Problème 1, Problème 2)
+
+Strasbourg: Problème 5, Problème 8
+
+
+{% endblock %}
+

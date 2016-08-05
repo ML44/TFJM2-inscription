@@ -1,0 +1,8 @@
+  	
+Bonjour {{ neq }} !
+
+Cette email vous confirme le bon changement de votre adresse email.
+
+Merci de votre participation !
+
+- Les organisateurs du TFJM2 -

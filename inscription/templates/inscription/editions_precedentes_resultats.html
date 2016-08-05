@@ -1,0 +1,2627 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li class="active"><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+<h2>Résultats</h2>
+	<h2>Edition 2014</h2>
+
+	<h3>Classement final</h3>
+
+	<center>
+	<table>
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Score Tour 1</th>
+	<th>Score Tour 2</th>
+	<th>Total</th>
+	<th>Prix</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>PAS</td>
+	<td>94.000001</td>
+	<td>75.000000</td>
+	<td>169.00000</td>
+	<td>Premier prix</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>82.714285</td>
+	<td>79.571430</td>
+	<td>162.28572</td>
+	<td>Second prix</td>
+	</tr>
+
+	<tr>
+	<td>DSG</td>
+	<td>77.428572</td>
+	<td>79.999999</td>
+	<td>157.42857</td>
+	<td>Troisième prix</td>
+	</tr>
+
+	<tr>
+	<td>HIV</td>
+	<td>79.857143</td>
+	<td>75.000000</td>
+	<td>154.85714</td>
+	<td>Quatrième prix</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>65.571428</td>
+	<td>77.000000</td>
+	<td>142.57143</td>
+	<td>Cinquième prix</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+	<td>LIL</td>
+	<td>66.000001</td>
+	<td>74.714285</td>
+	<td>140.71429</td>
+	<td>Mention très honorable</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>73.571429</td>
+	<td>66.000000</td>
+	<td>139.57143</td>
+	<td>Mention très honorable</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>70.428571</td>
+	<td>68.857143</td>
+	<td>139.28571</td>
+	<td>Mention très honorable</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+	<td>JEA</td>
+	<td>74.142857</td>
+	<td>59.333333</td>
+	<td>133.47619</td>
+	<td>Mention honorable</td>
+	</tr>
+
+	<tr>
+	<td>LAP</td>
+	<td>73.071429</td>
+	<td>58.142857</td>
+	<td>131.21429</td>
+	<td>Mention honorable</td>
+	</tr>
+
+	<tr>
+	<td>FER</td>
+	<td>61.857144</td>
+	<td>66.857143</td>
+	<td>128.71429</td>
+	<td>Mention honorable</td>
+	</tr>
+
+	<tr>
+	<td>STR</td>
+	<td>73.285714</td>
+	<td>52.785714</td>
+	<td>126.07143</td>
+	<td>Mention honorable</td>
+	</tr>
+	</tbody>
+	<tbody>
+	<tr>
+	<td>CUB</td>
+	<td>50.428572</td>
+	<td>66.428572</td>
+	<td>116.85714</td>
+	<td>Certificat</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>59.928572</td>
+	<td>56.285714</td>
+	<td>116.21429</td>
+	<td>Certificat</td>
+	</tr>
+
+	<tr>
+	<td>GIF</td>
+	<td>55.857143</td>
+	<td>51.714286</td>
+	<td>107.57143</td>
+	<td>Certificat</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>65.142856</td>
+	<td>41.714286</td>
+	<td>106.85714</td>
+	<td>Certificat</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>40.857143</td>
+	<td>60.571429</td>
+	<td>101.42857</td>
+	<td>Certificat</td>
+	</tr>
+
+	<tr>
+	<td>LAM</td>
+	<td>35.285714</td>
+	<td>39.714286</td>
+	<td>075.00000</td>
+	<td>Certificat</td>
+	</tr>
+	</tbody>
+	</table>
+
+	</center>
+
+
+
+
+
+	<h3>Tour 1</h3>
+
+
+
+	<h4>Groupe A</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Fermat</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>Strasbourg</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>Les Irréductibles</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>FER</td>
+	<td>1</td>
+	<td>8</td>
+	<td>2</td>
+	<td>10</td>
+	</tr>
+
+	<tr>
+	<td>STR</td>
+	<td>2</td>
+	<td>7</td>
+	<td>2</td>
+	<td>14</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>3</td>
+	<td>9</td>
+	<td>2</td>
+	<td>9</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>FER</td>
+	<td>10</td>
+	<td>10.571429</td>
+	<td>7.1428571</td>
+	<td>5.5714286</td>
+	<td>6</td>
+	<td>6</td>
+	<td>61.857144</td>
+	</tr>
+
+	<tr>
+	<td>STR</td>
+	<td>6.7142857</td>
+	<td>7.1428571</td>
+	<td>14</td>
+	<td>11.285714</td>
+	<td>7</td>
+	<td>8.7142857</td>
+	<td>73.285714</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>7</td>
+	<td>3.5714286</td>
+	<td>6.0714286</td>
+	<td>6.7857143</td>
+	<td>9</td>
+	<td>10.357143</td>
+	<td>59.928572</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+
+
+
+	<h4>Groupe B</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Les Individus lambda</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>PPCM Sainte Ursule</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>Seize</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LAM</td>
+	<td>1</td>
+	<td>1</td>
+	<td>2</td>
+	<td>1</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>2</td>
+	<td>7</td>
+	<td>2</td>
+	<td>1</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>3</td>
+	<td>8</td>
+	<td>2</td>
+	<td>17</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LAM</td>
+	<td>1</td>
+	<td>9.1428571</td>
+	<td>4.8571429</td>
+	<td>2.4285714</td>
+	<td>4.4285714</td>
+	<td>2.1428571</td>
+	<td>35.285714</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>3.1428571</td>
+	<td>4.1428571</td>
+	<td>1</td>
+	<td>7.4285714</td>
+	<td>6.8571429</td>
+	<td>6.7142857</td>
+	<td>40.857143</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>7.2857143</td>
+	<td>5.4285714</td>
+	<td>5.5714286</td>
+	<td>4.1428571</td>
+	<td>17</td>
+	<td>13.428571</td>
+	<td>70.428571</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe C</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Dijon - Saint-Germain</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>Men in Cube</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>Lili la tigresse</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>DSG</td>
+	<td>1</td>
+	<td>1</td>
+	<td>2</td>
+	<td>17</td>
+	</tr>
+
+	<tr>
+	<td>CUB</td>
+	<td>2</td>
+	<td>4</td>
+	<td>2</td>
+	<td>7</td>
+	</tr>
+
+	<tr>
+	<td>LIL</td>
+	<td>3</td>
+	<td>7</td>
+	<td>2</td>
+	<td>11</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>DSG</td>
+	<td>17</td>
+	<td>12.714286</td>
+	<td>7.1428571</td>
+	<td>5</td>
+	<td>6.8571429</td>
+	<td>8</td>
+	<td>77.428572</td>
+	</tr>
+
+	<tr>
+	<td>CUB</td>
+	<td>5.5714286</td>
+	<td>4.7142857</td>
+	<td>7</td>
+	<td>7.8571429</td>
+	<td>5.8571429</td>
+	<td>6.8571429</td>
+	<td>50.428572</td>
+	</tr>
+
+	<tr>
+	<td>LIL</td>
+	<td>6.2857143</td>
+	<td>5.1428571</td>
+	<td>6.4285714</td>
+	<td>7</td>
+	<td>11</td>
+	<td>11.571429</td>
+	<td>66.000001</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe D</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Les 11235 lapins</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>Trivial</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>JeanduSud</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LAP</td>
+	<td>1</td>
+	<td>1</td>
+	<td>2</td>
+	<td>9</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>2</td>
+	<td>2</td>
+	<td>2</td>
+	<td>18</td>
+	</tr>
+
+	<tr>
+	<td>JEA</td>
+	<td>3</td>
+	<td>4</td>
+	<td>2</td>
+	<td>16</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LAP</td>
+	<td>9</td>
+	<td>12.857143</td>
+	<td>8</td>
+	<td>8.6428571</td>
+	<td>5.7142857</td>
+	<td>8</td>
+	<td>73.071429</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>8.1428571</td>
+	<td>8.5714286</td>
+	<td>18</td>
+	<td>13.285714</td>
+	<td>7.4285714</td>
+	<td>5.4285714</td>
+	<td>82.714285</td>
+	</tr>
+
+	<tr>
+	<td>JEA</td>
+	<td>5.7142857</td>
+	<td>4.7142857</td>
+	<td>7.1428571</td>
+	<td>8</td>
+	<td>16</td>
+	<td>12.285714</td>
+	<td>74.142857</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe E</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Gif</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>Blaise Pascal</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>Tours-Descartes</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>GIF</td>
+	<td>1</td>
+	<td>2</td>
+	<td>2</td>
+	<td>11</td>
+	</tr>
+
+	<tr>
+	<td>PAS</td>
+	<td>2</td>
+	<td>8</td>
+	<td>2</td>
+	<td>20</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>3</td>
+	<td>1</td>
+	<td>2</td>
+	<td>19</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>GIF</td>
+	<td>11</td>
+	<td>8.1428571</td>
+	<td>7.8571429</td>
+	<td>4</td>
+	<td>5.5714286</td>
+	<td>5.5714286</td>
+	<td>55.857143</td>
+	</tr>
+
+	<tr>
+	<td>PAS</td>
+	<td>8.5714286</td>
+	<td>8.8571429</td>
+	<td>20</td>
+	<td>15.571429</td>
+	<td>8.2857143</td>
+	<td>8.2857143</td>
+	<td>94.000001</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>5.4285714</td>
+	<td>5.1428571</td>
+	<td>4.7142857</td>
+	<td>3</td>
+	<td>19</td>
+	<td>12.428571</td>
+	<td>65.142856</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe F</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Henri IV</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>Centre Galois</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>Maths Quatre Heures Chrono</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>HIV</td>
+	<td>1</td>
+	<td>8</td>
+	<td>2</td>
+	<td>15</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>2</td>
+	<td>5</td>
+	<td>2</td>
+	<td>9</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>3</td>
+	<td>6</td>
+	<td>2</td>
+	<td>15</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>HIV</td>
+	<td>15</td>
+	<td>13.142857</td>
+	<td>8.5714286</td>
+	<td>4.7142857</td>
+	<td>7</td>
+	<td>9.1428571</td>
+	<td>79.857143</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>6.7142857</td>
+	<td>8.2857143</td>
+	<td>9</td>
+	<td>10.285714</td>
+	<td>7.5714286</td>
+	<td>5.1428571</td>
+	<td>65.571428</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>8.2857143</td>
+	<td>5.8571429</td>
+	<td>7.5714286</td>
+	<td>5.7142857</td>
+	<td>15</td>
+	<td>12.714286</td>
+	<td>73.571429</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+
+	<h3>Tour 2</h3>
+
+
+
+	<h4>Groupe A</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>PAS</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>HIV</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>PAS</td>
+	<td>1</td>
+	<td>6</td>
+	<td>2</td>
+	<td>10</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>2</td>
+	<td>8</td>
+	<td>2</td>
+	<td>13</td>
+	</tr>
+
+	<tr>
+	<td>HIV</td>
+	<td>3</td>
+	<td>1</td>
+	<td>2</td>
+	<td>12</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>PAS</td>
+	<td>10</td>
+	<td>12</td>
+	<td>7</td>
+	<td>7.5714286</td>
+	<td>7.8571429</td>
+	<td>9.2857143</td>
+	<td>75.000000</td>
+	</tr>
+
+	<tr>
+	<td>TRI</td>
+	<td>6.2857143</td>
+	<td>7.7142857</td>
+	<td>13</td>
+	<td>13.571429</td>
+	<td>7.8571429</td>
+	<td>9.8571429</td>
+	<td>79.571430</td>
+	</tr>
+
+	<tr>
+	<td>HIV</td>
+	<td>6.2857143</td>
+	<td>6.1428571</td>
+	<td>8.2857143</td>
+	<td>6.2857143</td>
+	<td>12</td>
+	<td>14.857143</td>
+	<td>75.000000</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe B</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>DSG</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>JEA</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>DSG</td>
+	<td>1</td>
+	<td>8</td>
+	<td>2</td>
+	<td>13</td>
+	</tr>
+
+	<tr>
+	<td>JEA</td>
+	<td>2</td>
+	<td>1</td>
+	<td>2</td>
+	<td>7</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>3</td>
+	<td>2</td>
+	<td>2</td>
+	<td>14</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>DSG</td>
+	<td>13</td>
+	<td>13.333333</td>
+	<td>8.5</td>
+	<td>9.3333333</td>
+	<td>7.5</td>
+	<td>7.5</td>
+	<td>79.999999</td>
+	</tr>
+
+	<tr>
+	<td>JEA</td>
+	<td>7.5</td>
+	<td>7.8333333</td>
+	<td>7</td>
+	<td>9.6666667</td>
+	<td>5.6666667</td>
+	<td>4.1666667</td>
+	<td>59.333333</td>
+	</tr>
+
+	<tr>
+	<td>QUA</td>
+	<td>6.3333333</td>
+	<td>6.1666667</td>
+	<td>7.1666667</td>
+	<td>6.3333333</td>
+	<td>14</td>
+	<td>9.8333333</td>
+	<td>66.000000</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe C</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>STR</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>LAP</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>STR</td>
+	<td>1</td>
+	<td>5</td>
+	<td>1.5</td>
+	<td>14</td>
+	</tr>
+
+	<tr>
+	<td>LAP</td>
+	<td>2</td>
+	<td>2</td>
+	<td>2</td>
+	<td>17</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>3</td>
+	<td>1</td>
+	<td>2</td>
+	<td>13</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>STR</td>
+	<td>14</td>
+	<td>9</td>
+	<td>6.5714286</td>
+	<td>7.2857143</td>
+	<td>4</td>
+	<td>3.7142857</td>
+	<td>52.785714</td>
+	</tr>
+
+	<tr>
+	<td>LAP</td>
+	<td>5.8571429</td>
+	<td>4.1428571</td>
+	<td>17</td>
+	<td>7</td>
+	<td>5.4285714</td>
+	<td>7.5714286</td>
+	<td>58.142857</td>
+	</tr>
+
+	<tr>
+	<td>SEI</td>
+	<td>7.1428571</td>
+	<td>6.7142857</td>
+	<td>4.2857143</td>
+	<td>7</td>
+	<td>13</td>
+	<td>11.857143</td>
+	<td>68.857143</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe D</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LIL</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LIL</td>
+	<td>1</td>
+	<td>8</td>
+	<td>2</td>
+	<td>17</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>2</td>
+	<td>2</td>
+	<td>2</td>
+	<td>20</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>3</td>
+	<td>4</td>
+	<td>2</td>
+	<td>1</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>LIL</td>
+	<td>17</td>
+	<td>12.428571</td>
+	<td>7.1428571</td>
+	<td>5.7142857</td>
+	<td>5.1428571</td>
+	<td>7.4285714</td>
+	<td>74.714285</td>
+	</tr>
+
+	<tr>
+	<td>GAL</td>
+	<td>7.5714286</td>
+	<td>8.1428571</td>
+	<td>20</td>
+	<td>8.7142857</td>
+	<td>8.2857143</td>
+	<td>7.4285714</td>
+	<td>77.000000</td>
+	</tr>
+
+	<tr>
+	<td>DES</td>
+	<td>8.1428571</td>
+	<td>7</td>
+	<td>7.5714286</td>
+	<td>5.2857143</td>
+	<td>1</td>
+	<td>3.7142857</td>
+	<td>41.714286</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe E</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>FER</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>GIF</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>FER</td>
+	<td>1</td>
+	<td>7</td>
+	<td>2</td>
+	<td>10</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>2</td>
+	<td>8</td>
+	<td>2</td>
+	<td>8</td>
+	</tr>
+
+	<tr>
+	<td>GIF</td>
+	<td>3</td>
+	<td>3</td>
+	<td>2</td>
+	<td>12</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>FER</td>
+	<td>10</td>
+	<td>12.857143</td>
+	<td>7.2857143</td>
+	<td>5.4285714</td>
+	<td>6.1428571</td>
+	<td>6.1428571</td>
+	<td>66.857143</td>
+	</tr>
+
+	<tr>
+	<td>IRR</td>
+	<td>6.1428571</td>
+	<td>6.7142857</td>
+	<td>8</td>
+	<td>8.2857143</td>
+	<td>5.4285714</td>
+	<td>6.7142857</td>
+	<td>56.285714</td>
+	</tr>
+
+	<tr>
+	<td>GIF</td>
+	<td>5.2857143</td>
+	<td>7.5714286</td>
+	<td>6</td>
+	<td>5.4285714</td>
+	<td>12</td>
+	<td>5</td>
+	<td>51.714286</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+
+
+	<h4>Groupe F</h4>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Phase 1</th>
+	<th>Phase 2</th>
+	<th>Phase 3</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>CUB</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	<td>Rapporteur</td>
+	</tr>
+
+	<tr>
+	<td>LAM</td>
+	<td>Rapporteur</td>
+	<td>Opposant</td>
+	<td>Défenseur</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ordre</th>
+	<th>Problème présenté</th>
+	<th>Multiplicateur k<sub>1</sub></th>
+	<th>Note d'écrit</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>CUB</td>
+	<td>1</td>
+	<td>8</td>
+	<td>2</td>
+	<td>10</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>2</td>
+	<td>2</td>
+	<td>2</td>
+	<td>10</td>
+	</tr>
+
+	<tr>
+	<td>LAM</td>
+	<td>3</td>
+	<td>4</td>
+	<td>2</td>
+	<td>1</td>
+	</tr>
+	</tbody>
+	</table></center>
+	<br>
+	<center><table>
+
+
+	<colgroup>
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Ecrit 1</th>
+	<th>Oral 1</th>
+	<th>Ecrit 2</th>
+	<th>Oral 2</th>
+	<th>Ecrit 3</th>
+	<th>Oral 3</th>
+	<th>Score</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>CUB</td>
+	<td>10</td>
+	<td>10.571429</td>
+	<td>5</td>
+	<td>6.1428571</td>
+	<td>6.4285714</td>
+	<td>8.8571429</td>
+	<td>66.428572</td>
+	</tr>
+
+	<tr>
+	<td>PPC</td>
+	<td>5.5714286</td>
+	<td>8</td>
+	<td>10</td>
+	<td>9.4285714</td>
+	<td>6</td>
+	<td>4.1428571</td>
+	<td>60.571429</td>
+	</tr>
+
+	<tr>
+	<td>LAM</td>
+	<td>6.4285714</td>
+	<td>5.7142857</td>
+	<td>4.5714286</td>
+	<td>5.4285714</td>
+	<td>1</td>
+	<td>5.5714286</td>
+	<td>39.714286</td>
+	</tr>
+	</tbody>
+	</table>
+	</center>
+
+	<h2>Edition 2013</h2>
+
+	<div class="openbig">
+	<h3>Classement final</h3>
+
+	<ul class="liste">
+	<li><b>1er prix:</b> TS-Descartes
+	</li>
+	<li><b>2ème prix:</b> Orsay 3
+	</li>
+	<li><b>3ème prix:</b> Charlemagne
+	</li>
+	<li><b>3ème prix:</b> Lili la tigresse
+	</li>
+	<li><b>5ème prix:</b> Orsay 4
+	</li>
+	<li><b>5ème prix:</b> Strasbourg
+	</li>
+	<li><b>Mentions très honorable:</b> JeanDuSud, Orsay 2
+	</li>
+	<li><b>Mentions honorable:</b> LI(X), Notre-Dame-Saint-Sigisbert, Saint-Vincent, Orsay 1
+	</li>
+	</ul>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Tour 1</th>
+	<th>Tour 2</th>
+	<th>Total</th>
+	<th>Résultat</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>TS-Descartes</td>
+	<td>86</td>
+	<td>74</td>
+	<td>160</td>
+	<td>1</td>
+	</tr>
+
+	<tr>
+	<td>Orsay 3</td>
+	<td>81</td>
+	<td>69</td>
+	<td>150</td>
+	<td>2</td>
+	</tr>
+
+	<tr>
+	<td>Lili La Tigresse</td>
+	<td>71</td>
+	<td>70</td>
+	<td>141</td>
+	<td>3</td>
+	</tr>
+
+	<tr>
+	<td>Charlemagne</td>
+	<td>62</td>
+	<td>79</td>
+	<td>141</td>
+	<td>3</td>
+	</tr>
+
+	<tr>
+	<td>Strasbourg</td>
+	<td>70</td>
+	<td>67</td>
+	<td>137</td>
+	<td>5</td>
+	</tr>
+
+	<tr>
+	<td>Orsay 4</td>
+	<td>67</td>
+	<td>70</td>
+	<td>137</td>
+	<td>5</td>
+	</tr>
+
+	<tr>
+	<td>JeanDuSud</td>
+	<td>72</td>
+	<td>62</td>
+	<td>134</td>
+	<td>TH</td>
+	</tr>
+
+	<tr>
+	<td>Orsay 2</td>
+	<td>56</td>
+	<td>75</td>
+	<td>131</td>
+	<td>TH</td>
+	</tr>
+
+	<tr>
+	<td>LI(X)</td>
+	<td>45</td>
+	<td>76</td>
+	<td>121</td>
+	<td>H</td>
+	</tr>
+
+	<tr>
+	<td>Notre-Dame-Saint-Sigisbert</td>
+	<td>70</td>
+	<td>44</td>
+	<td>114</td>
+	<td>H</td>
+	</tr>
+
+	<tr>
+	<td>Saint-Vincent</td>
+	<td>62</td>
+	<td>50</td>
+	<td>112</td>
+	<td>H</td>
+	</tr>
+
+	<tr>
+	<td>Orsay 1</td>
+	<td>45</td>
+	<td>52</td>
+	<td>97</td>
+	<td>H</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+	</div>
+
+
+	<h2>Edition 2012</h2>
+
+	<div class="openbig">
+
+	<h3>Classement final</h3>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>Equipe</th>
+	<th>Tour 1</th>
+	<th>Tour 2</th>
+	<th>Total</th>
+	<th>Résultat</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Descartes</td>
+	<td>1,171</td>
+	<td>1,313</td>
+	<td>2,484</td>
+	<td>1</td>
+	</tr>
+
+	<tr>
+	<td>Orsay</td>
+	<td>1,178</td>
+	<td>1,166</td>
+	<td>2,344</td>
+	<td>1</td>
+	</tr>
+
+	<tr>
+	<td>Equipe mixte</td>
+	<td>1,007</td>
+	<td>1,074</td>
+	<td>2,081</td>
+	<td>3</td>
+	</tr>
+
+	<tr>
+	<td>Hoche</td>
+	<td>0,915</td>
+	<td>1,128</td>
+	<td>2,043</td>
+	<td>3</td>
+	</tr>
+
+	<tr>
+	<td>Charlemagne</td>
+	<td>1,092</td>
+	<td>0,849</td>
+	<td>1,941</td>
+	<td>5</td>
+	</tr>
+
+	<tr>
+	<td>Saint-Germain</td>
+	<td>0,901</td>
+	<td>1,019</td>
+	<td>1,920</td>
+	<td>6</td>
+	</tr>
+
+	<tr>
+	<td>Limite plus l'infini</td>
+	<td>0,893</td>
+	<td>1,023</td>
+	<td>1,916</td>
+	<td>6</td>
+	</tr>
+
+	<tr>
+	<td>La Mennais</td>
+	<td>0,936</td>
+	<td>0,814</td>
+	<td>1,750</td>
+	<td>8</td>
+	</tr>
+
+	<tr>
+	<td>LLG</td>
+	<td>0,907</td>
+	<td>0,614</td>
+	<td>1,521</td>
+	<td>9</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+	</div>
+
+
+
+	<h2>Edition 2011</h2>
+
+	<div class="openbig">
+
+	<h3>Classement final</h3>
+
+	<center><table>
+
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+
+	<colgroup>
+	<col>
+	</colgroup>
+	<thead>
+	<tr>
+	<th>&nbsp;</th>
+	<th>Tour 1</th>
+	<th>Tour 2</th>
+	<th>Total</th>
+	<th>Prix</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td>Orsay</td>
+	<td>1,161</td>
+	<td>1,120</td>
+	<td>2,281</td>
+	<td>Premier</td>
+	</tr>
+
+	<tr>
+	<td>Louis-le-Grand</td>
+	<td>1,185</td>
+	<td>1,093</td>
+	<td>2,278</td>
+	<td>Premier</td>
+	</tr>
+
+	<tr>
+	<td>Hoche</td>
+	<td>0,89</td>
+	<td>0,99</td>
+	<td>1,88</td>
+	<td>Deuxième</td>
+	</tr>
+
+	<tr>
+	<td>Strasbourg</td>
+	<td>0,77</td>
+	<td>0,80</td>
+	<td>1,57</td>
+	<td>Certificat</td>
+	</tr>
+	</tbody>
+	</table></center>
+
+	</div>
+
+
+{% endblock %}
+

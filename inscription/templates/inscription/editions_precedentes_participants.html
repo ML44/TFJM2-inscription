@@ -1,0 +1,616 @@
+
+{% extends "base.html" %}
+
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li class="active"><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+	<h2>Participants</h2>
+    
+        <h3>Edition 2014</h3>
+					
+			  <h4>Centre Galois</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Jean Giraudoux de Châteauroux (Indre), Maurice Genevoix d'Ingré (Loiret), Pierre et Marie Curie de Châteauroux (Indre), Alain Fournier de Bourges (Cher)</li>
+				<li>Encadrant: Christian Jany</li>
+			  <li>Elèves: 
+			  Yvette Nou, 
+			  Océane Bligand, 
+			  Nicolas Rygiel, 
+			  Clément Cadet, 
+			  Antoine Martin, 
+			  Pierre Tholoniat
+			  </li>
+			  <li>Résultat: Cinquième prix</li>
+			  </ul>
+
+			  <h4>Fermat</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Fermat (Toulouse)</li>
+			  <li>Encadrants: Christophe Barré, Ambroise Marigot </li>
+			  <li>Elèves:
+			  Gabrielle Soum,
+			  Julie Ben Zenou,
+			  Marius Dufraisse,
+			  François Gardères,
+			  Mathieu Barré,
+			  Sasha Collin
+			  </li>
+			  <li>Résultat: Mention Honorable</li>
+			  </ul>
+
+			  <h4>GIF</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Lycée de la vallée de Chevreuse (Gir sur Yvette)</li>
+			  <li>Encadrants: Odile Kerleguer, Antoine Giron, Guillaume Leblanc </li>
+			  <li>Elèves:
+			  Lucas D'Alimonte,
+			  Julien Mougel,
+			  Corentin Lauveriat,
+			  Jérémy Faure,
+			  Gabriel Georgy,
+			  Nicolas Zucchet
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4>Henri IV</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Henri IV </li>
+			  <li>Encadrants: Guillaume Barraquand, Arthur Renault</li>
+			  <li>Elèves: 
+			  Louise Anfray,
+			  Augustin Lion,
+			  Joachim Delcourt,
+			  Romain Vejdovsky,
+			  Karthigan Sinnathamby,
+			  Alexandre Andreini
+			  </li>
+			  <li>Résultat: Quatrième Prix</li>
+			  </ul>
+
+			  <h4>Jean Du Sud</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Jean Durand  </li>
+			  <li>Encadrants: David Sauzet, Davide Zancanaro</li>
+			  <li>Elèves:
+			  Sébastien Castel,
+			  Julien Chicha,
+			  David Rouyre,
+			  Kétil Grammont,
+			  Jean-Baptiste Laval,
+			  Samuel Pech
+			  </li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+			  <h4>Les 11235 Lapins</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Albert de mun, Hoche, Talma, Jeanne d'Albret, Henri IV, Descartes (Antony) </li>
+			  <li>Encadrants: Noé De Rancourt, Luc Lehéricy</li>
+			  <li>Elèves:
+			  Lamia Lamrani,
+			  Viviane Ledoux,
+			  Irène Bivas,
+			  Thomas Sepulchre,
+			  Sohaib Ouzineb,
+			  Gaétan Cournaud,
+			  </li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+			  <h4>Les Individus Lambda</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Gay-Lussac</li>
+			  <li>Encadrants: Jean André Campos Orioal, Michel Léonard </li>
+			  <li>Elèves:
+			  Minato Ben Ahmed Daho,
+			  Clément Trassoudaine
+			  Louis-Marie Portal
+			  Clément Hoffmann
+			  Antoine Joinneau
+			  Vivien Marcault
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4>Les irréductibles</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Jules Fil (Carcassonne) </li>
+			  <li>Encadrants: Charlotte Aupérin, Fabrice Destruhaut </li>
+			  <li>Elèves:
+			  Julie Arino,
+			  Jonathan De Carvalho;
+			  Tristan Lamur,
+			  Anthony Roux,
+			  Mathieu Verm,
+			  François De Rochette
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4>Lili la Tigresse</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Clemenceau (Nantes)</li>
+			  <li>Encadrants: Pascale Rey du Boissieu, François Sauvageot</li>
+			  <li>Elèves:
+			  Inès Abdelqari,
+			  Inès Maksud,
+			  Hugues Déprés,
+			  Jean-Loup Couchman,
+			  Léonard Hémion,
+			  Arthur Remaud,
+			  </li>
+			  <li>Résultat: Mention très honorable</li>
+			  </ul>
+
+			  <h4>Lycée Blaise Pascal</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Blaise Pascal (Orsay), Marie Curie (Sceaux) </li>
+			  <li>Encadrants: Hervé Gianella, Pierre Antoine Guihéneuf</li>
+			  <li>Elèves:
+			  Alexandre Damongeot,
+			  Alain Delaet,
+			  Colin Davalo,
+			  Nicolas Fabiano,
+			  André Kalougine,
+			  Hector Letellier,
+			  </li>
+			  <li>Résultat: Premier prix</li>
+			  </ul>
+
+			  <h4>Dijon - Saint Germain</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Lycée international de Saint-Germain-en-Laye, Lycée Charles de Gaulle de Dijon</li>
+			  <li>Encadrants: Guillaume Conchon-Kerjan, Philippe Julien</li>
+			  <li>Elèves:
+			  Clara Ding,
+			  Cécile Gachet,
+			  Olga Kosno,
+			  Cyril Conchon-Kerjan,
+			  Félix Lequen
+			  </li>
+			  <li>Résultat:Troisième prix </li>
+			  </ul>
+
+			  <h4>Men in Cube</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Eugène Livet</li>
+			  <li>Encadrants: Danièle Montaigne, Thierry Depres, Hervé Le Roux</li>
+			  <li>Elèves:
+			  Thomas Thebaud,
+			  Marc Chantrel,
+			  Basile Chatton,
+			  Alexandre Lesieur,
+			  Gaël Mahé,
+			  David Robert-Ansart
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4> PPCM Sainte Ursule</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Sainte Ursule </li>
+			  <li>Encadrants: Delphine Peron, JEan-Luc Biaunier</li>
+			  <li>Elèves:
+			  Ludovic Blunat,
+			  Léo Vincent,
+			  Olivier Vieille,
+			  Aurélien Gauffre,
+			  Théo Maurand,
+			  Volny Blin De Laloubie
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4>Seize</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Bossuet Notre-Dame, Montaigne, Lycée de la Vallée de Chevreuse, Condorcet </li>
+			  <li>Encadrants: Léonard Blier, Christoph Dürr</li>
+			  <li>Elèves:
+			  Salomé Do,
+			  Alois Vojinovic,
+			  Diwan Pena Albert,
+			  William Palmer,
+			  Brice Rauby,
+			  Martin Thot
+			  </li>
+			  <li>Résultat: Mention très honorable</li>
+			  </ul>
+
+			  <h4>Strasbourg</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Marie Curie, Lycéee International des Pontonniers </li>
+			  <li>Encadrants: Tatiana Beliaeva, Romain Ponchon</li>
+			  <li>Elèves:
+			  Sophie Guillaume,
+			  Arnaud Piron,
+			  Neil Ibata,
+			  Jean-Pierre Noot,
+			  Basile Morando,
+			  Sami Belkhorfi
+			  </li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+			  <h4>Tours - Descartes</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Descartes</li>
+			  <li>Encadrants: Olivier Goisque</li>
+			  <li>Elèves:
+			  Corentin Le Gall,
+			  Corentin Jaumain,
+			  Baptiste Pinard,
+			  Loic Pate, 
+			  Virgile Brodu,
+			  Antoine Reveillere
+			  </li>
+			  <li>Résultat: Certificat</li>
+			  </ul>
+
+			  <h4>Trivial</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Louis-le-Grand </li>
+			  <li>Encadrants: Margaret Bilu, Thomas Budzinsk</li>
+			  <li>Elèves:
+			  Clément Lezane,
+			  Song Phuc Thien Duong,
+			  Arnaud Robin,
+			  Charles Madeline-Derou,
+			  Adrien Glotin,
+			  Adrien Bariant
+			  </li>
+			  <li>Résultat: Second prix</li>
+			  </ul>
+
+			  <h4>TS1 LLG</h4> 
+			  <ul class="liste">
+			  <li>Lycée représenté: Louis-le-Grand</li>
+			  <li>Encadrants: Thomas Lehéricy, Guy Alarcon</li>
+			  <li>Elèves:
+			  Eva Philippe,
+			  Antoine Séré,
+			  Pierre Le Bris,
+			  Moïse Blanchard,
+			  Randy Kotti,
+			  Matthieu Dolbeault
+			  </li>
+			  <li>Résultat: Mention très honorable</li>
+			  </ul>
+
+        <h3>Edition 2013</h3>
+					
+			  <div class="openbig">
+			  <h4>Charlemagne</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Charlemagne (Paris), Sophie-Germain (Paris),
+			  Saint-Michel-de-Picpus (Paris), Victor-Hugo (Paris)</li>
+			  <li>Encadrants: Joon Kwon, Arsène Pierrot-Valroff</li>
+			  <li>Elèves: Valentin Amar, Antoni Brines, Théo Compérot, Horace Guy, Eric Ren, Arthur Renault</li>
+			  <li>Résultat: Troisème prix</li>
+			  </ul>
+
+
+			  <h4>JeanDuSud</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Jean-Durand (Castelnaudary)</li>
+			  <li>Encadrants: David Sauzet, David Zancanaro</li>
+			  <li>Elèves: Charly Bonnassie, Nicolas Castel, Julien Chicha, Kétil Grammont, Jean-Baptiste Laval, Romaric Mollardv
+			  <li>Résultat: Mention très honorable</li>
+			  </ul>
+
+
+
+			  <h4>LI(X)</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Lycée International (Saint-Germain-en-Laye)</li>
+			  <li>Encadrants: Julien Philippe, Kevin Kpakpo, Odysseas Yakoumis,
+			  Nicolas Cloarec</li>
+			  <li>Elèves: Clara Ding, Shimon Egushi, Ariane Gayout, Félix Lequen, Michaël Trazzi, Sarah Tulliez</li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+
+
+			  <h4>Lili La Tigresse</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Clémenceau (Nantes)</li>
+			  <li>Encadrants: Pascale Rey du Boissieu, François Sauvageot</li>
+			  <li>Elèves: Jean-Loup Couchman, Léonard Hemion, Inès Maksud, Arthur Remaud</li>
+			  <li>Résultat: Troisème prix</li>
+			  </ul>
+
+
+
+
+			  <h4>Notre-Dame-Saint-Sigisbert</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Nombre-Dame-Saint-Sigisbert (Nancy)</li>
+			  <li>Encadrants: Marc Meyer, Marie-Agnès Dufour</li>
+			  <li>Elèves: Julien Beisel, David Cheiki, Vircent Drouot, Emilien Dufour, Corentin Laventure, Bérenger Tollitte</li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+
+
+
+			  <h4>Orsay 1</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Louis-le-Grand (Paris), Internat d'excellence (Sourdun)</li>
+			  <li>Encadrants: Emmanuel Lecouturier, Laguel Yassine</li>
+			  <li>Elèves: Matthieu Dolbeault, Marc Fersztand, Song Phuc Thien Duong, Clément Lezane, Younès Zine</li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+
+
+			  <h4>Orsay 2</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Louis-le-Grand (Paris), Henri-IV (Paris),
+			  Richelieu (Rueil), Lycée Franco-allemand (Buc),
+			  Notre-Dame-de-Kerbertrand (Quimperlé)</li>
+			  <li>Encadrants: Vincent Jugé, Jacques Darné</li>
+			  <li>Elèves: Noémie Cartier, Alice Contat, Marc Coudriau, Alexis Gohier, Cécile Gontier, Auriane Perrin</li>
+			  <li>Résultat: Mention très honorable</li>
+			  </ul>
+
+
+
+			  <h4>Orsay 3</h4>
+
+			  <ul class="liste">
+			  <li>Lycées représentés: Henri-IV (Paris), Blaise-Pascal (Orsay),
+			  Louis-le-Grand (Paris), Lycée Franco-allemand (Buc), Berthollet
+			  (Annecy), Huges-Capet (Senlis)</li>
+			  <li>Encadrants: Mikhail Isaev, Vladimir Shchur</li>
+			  <li>Elèves: Vincent Bouis, Colin Davalo, Ippolyti Dellatolas, Louis Mutricy, Simon Machado, Florent Noisette</li>
+			  <li>Résultat: Deuxième Prix</li>
+			  </ul>
+
+
+
+
+			  <h4>Orsay 4</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Hoche (Versailles), Louis-le-Grand (Paris),
+			  Lavoisier (Paris), Henri-IV (Paris), Saint-Aspais (Melun)</li>
+			  <li>Encadrants: Gwenaël Mercier, Martin Orr</li>
+			  <li>Elèves: Myriam Qrichi Aniba, Clément Floquet, Marc Ganet, Alice Phe, Aline Phe</li>
+			  <li>Résultat: Cinquième Prix</li>
+			  </ul>
+
+
+
+			  <h4>Saint-Vincent</h4>
+
+			  <ul class="liste">
+			  <li>Lycée représenté: Saint-Vincent (Senlis)</li>
+			  <li>Encadrants: Brigitte Dupel, Annie Blanchard</li>
+			  <li>Elèves: Alix Janicaud, Gaël Kemp, Adrien Lepic, Hadrien Marcellin, Enguerran Morisse</li>
+			  <li>Résultat: Mention honorable</li>
+			  </ul>
+
+			  <h4>Strasbourg</h4>
+			  <ul class="liste">
+			  <li>Lycées représentés: Marie-Curie (Strasbourg), L.I. des Pontonniers
+			  (Strasbourg), Fustel-de-Coulanges (Strasbourg), Henri-Meck (Molsheim)</li>
+			  <li>Encadrant: Tatiana Baliaeva</li>
+			  <li>Elèves: Nicolas André, Sami Balkhorfi, Sophie Guillaume, Neil Ibata, Basile Morando, Hugo Nartz, Myriam Sbeiti</li>
+			  <li>Résultat: Cinquième prix</li>
+			  </ul>
+
+			  <h4>TS-Tours-Descartes</h4>
+			  <ul class="liste">
+			  <li>Lycée représenté: Descartes (Tours)</li>
+			  <li>Encadrants: Olivier Goisque, Julien Albert</li>
+			  <li>Elèves: Sayuli Drouard, Victor Marché, Simon Nivelle, Pierre Popineau, Thibault Richard, Lothaire Ulrich</li>
+			  <li>Résultat: Premier prix</li>
+			  </ul>
+			  </div>
+        
+        <h3>Edition 2012</h3>
+        	<div class="openbig">
+			  <h4>Charlemagne</h4>
+			  <ul class="liste">
+			  <li>Encadrants: Joon Kwon, Guillaume Barraquand</li>
+			  <li>Elèves: Alice Ainsa, Hippolyte Coste, Nathan Grinsztajn, Arsène Pierrot-Valroff, Alban Salaun</li>
+			  <li>Résultat: Cinquième</li>
+			  </ul>
+
+
+			  <h4>Club d'orsay</h4>
+			  <ul class="liste">
+			  <li>Encadrants: Gabriel Dospinescu, Emmanuel Lecouturier</li>
+			  <li>Elèves: Nicolas Cloarec, Kévin Kpakpo, Yassine Laguel, Mikael Tacu, Odysséas Yiakoumis</li>
+			  <li>Résultat: Premier</li>
+			  </ul>
+
+
+
+
+			  <h4>Equipe Mixte</h4>
+			  <ul class="liste">
+			  <li>Encadrants: Tatiana Beliaeva, Romain Ponchon</li>
+			  <li>Elèves: Mathieu Barrouillet, Constant Razel, Alexander Semenov, Antoine Tholoniat</li>
+			  <li>Résultat: Troisème</li>
+			  </ul>
+
+
+
+
+
+			  <h4>Hoche 1S1</h4>
+			  <ul class="liste">
+			  <li>Encadrant: Emmanuel Cougoureux</li>
+			  <li>Elèves: Alexandre Carlier, Charles Cougoureux, Louis Cougoureux, Guerric Delage</li>
+			  <li>Résultat: Troisème</li>
+			  </ul>
+
+
+
+
+			  <h4>La Mennais</h4>
+			  <ul class="liste">
+			  <li>Elèves: Anthony Billard, Paul Hernault, Millardet Maël, Tobias Ollive</li>
+			  <li>Résultat: Huitième</li>
+			  </ul>
+
+
+
+			  <h4>Limite plus l'infini</h4>
+			  <ul class="liste">
+			  <li>Elèves: Christina Bobbio, Hugues de Ferrières, Marguerite Flammarion, Nicolas Huang, Dany Kawa</li>
+			  <li>Résultat: Sixième</li>
+			  </ul>
+
+
+
+
+			  <h4>LLG</h4>
+			  <ul class="liste">
+			  <li>Elèves: Corentin Fierobe, Cherazade Ghalifa, Galatée Héméry, Vincent Mouly</li>
+			  <li>Résultat: Neuvième</li>
+			  </ul>
+
+
+
+			  <h4>Lycée international Saint-Germain</h4>
+			  <ul class="liste">
+			  <li>Encadrant: Philippe Julien</li>
+			  <li>Elèves: Shimon Eguchi, Ariane Gayout, Adrien Palayret, Quentin Rodrigues, Jean Tarbouriech</li>
+			  <li>Résultat: Sixième</li>
+			  </ul>
+
+
+
+
+
+			  <h4>TS6 - Descartes</h4>
+			  <ul class="liste">
+			  <li>Encadrant: Olivier Goisque</li>
+			  <li>Elèves: Arthur Dozias, Simon Nguyen, Hadrien Pinault, Xavier Poulot-Cazajous, Calyssa Trezy, Mkrtich Vatinyan</li>
+			  <li>Résultat: Premier</li>
+			  </ul>
+			</div>
+        
+        <h3>Edition 2011</h3>
+        	<div class="openbig">
+		  <h4>Orsay</h4>
+		  <ul class="liste">
+		  <li>Encadrant: Gabriel Dospinescu</li>
+		  <li>Elèves: Armand Bernardi, Guillaume Conchon-Kerjan, Lucas Mayrhofer, Roxane Morel, Vincent Mouly, Matthieu Lequesne</li>
+		  <li>Résultat: Premier</li>
+		  </ul>
+
+
+		  <h4>Louis-le-Grand</h4>
+		  <ul class="liste">
+		  <li>Encadrant: Igor Kortchemski</li>
+		  <li>Elèves: Diane Gallois-Wong, Jonathan Dong, Aurelien Velleret, Paul Thevenin, Sébastien Chevaleyre, Victor Quach</li>
+		  <li>Résultat: Premier</li>
+		  </ul>
+
+
+
+		  <h4>Hoche</h4>
+		  <ul class="liste">
+		  <li>Encadrant: Tatiana Beliaeva</li>
+		  <li>Elèves: Sarah Fachada-Dury, Charlotte Herzog, Mercedes Haiech, Yves Pezzetta, Félix Roy</li>
+		  <li>Résultat: Deuxième</li>
+		  </ul>
+
+
+		  <h4>Strasbourg</h4>
+		  <ul class="liste">
+		  <li>Encadrant: Remy Nicolain</li>
+		  <li>Elèves: Paul Dario, Isaac Konan, Samuel Mackeown, Luc Lehéricy, Thomas Lehéricy, Pierre Manceron</li>
+		  <li>Résultat: Certificat </li>
+		  </ul>
+		  </div>
+{% endblock %}
+

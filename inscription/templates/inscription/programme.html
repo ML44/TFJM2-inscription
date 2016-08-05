@@ -1,0 +1,156 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li class="active"><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+<h2>Programme</h2>
+
+Ce calendrier est indicatif et peut être sujet à modifications:
+
+    Mercredi 14 janvier
+
+Publication du règlement 2015
+Mise en ligne des problèmes
+Ouverture de la procédure d'inscription
+    Mardi 10 février
+
+Clôture des inscriptions
+Publication de la liste des équipes sélectionnées.
+    Samedi 28 février, 23h59
+
+        Date limite de retour des documents (autorisations et paiement) faisant foi pour l'inscription
+
+    Dimanche 8 mars, 23h59
+
+        Date limite d'envoi des solutions pour les tournois de Toulouse et Saint-Étienne
+    Mardi 10 mars
+
+        19h : Tirage au sort pour le tournoi de Toulouse
+
+        20h : Tirage au sort pour le tournoi de Saint-Étienne
+
+
+    Samedi 14 - Dimanche 15 mars
+
+        Tournoi régional à Toulouse et à Saint-Étienne
+
+    Dimanche 15 mars, 23h59
+
+        Date limite d'envoi des solutions pour les tournois de Paris et Rennes
+    Mardi 17 mars
+
+        19h : Tirage au sort pour le tournoi de Paris
+
+        20h : Tirage au sort pour le tournoi de Rennes
+
+
+    Samedi 21 - Dimanche 22 mars
+
+        Tournoi régional à Paris et à Rennes
+
+    Dimanche 22 mars, 23h59
+
+        Date limite d'envoi des solutions pour les tournois de Strasbourg et Palaiseau
+    Mardi 24 mars
+
+        19h : Tirage au sort pour le tournoi de Strasbourg
+
+        20h : Tirage au sort pour le tournoi de Palaiseau
+
+
+    Samedi 28 - Dimanche 29 mars
+
+        Tournoi régional à Strasbourg et à Palaiseau
+
+    Jeudi 14 - Dimanche 17 mai
+
+        Finale nationale à l'École polytechnique et l'ENSTA (Palaiseau)
+
+
+{% endblock %}

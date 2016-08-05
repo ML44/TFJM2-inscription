@@ -1,0 +1,9 @@
+
+Bonjour {{ orga }} !
+
+L'équipe {{ neq }} a finalisé son inscription.
+
+Merci.
+
+
+

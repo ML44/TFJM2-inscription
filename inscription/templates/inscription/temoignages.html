@@ -1,0 +1,350 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+  <h2>Témoignages</h2>
+  <p>
+  Voici quelques témoignages d'anciens participants du TFJM et de l'ITYM:
+  </p>
+
+  <h3>Edition 2014</h3>
+  <ul class="liste">
+   <li>
+    <BLOCKQUOTE class="quote">
+    « Se retrouver dans cette logique scientifique mais aussi sportive, parce oui, le TFJM c’est du sport , au début on pense à un marathon, et puis les deadlines approchent et là, c’est un sprint[...]» 
+    <br>
+    <CITE>Antoine, 18 ans, participant en 2014 (actuellement en préparatoire au lycée Louis Le Grand) </CITE>
+    </BLOCKQUOTE>
+
+    <p class="infor">Témoignage complet:</p>
+    
+    <div class="openbig">
+    <p class="infor2">
+  Le TFJM pour moi ce fut une expérience hors du commun, je n’avais jamais connu de rassemblements scientifiques comme celui-là (je n’en avais pas connu beaucoup de toute manière) mais se retrouver dans cette logique scientifique mais aussi sportive, parce oui, le TFJM c’est du sport , au début on pense à un marathon, et puis les deadlines approchent et là, c’est un sprint : on se donne, on cherche, on trouve, on a des idées qui partent un peu dans tout les sens mais en groupe, on se recentre et on arrive a ne garder que le bon. L’équipe dont j’étais capitaine était quelque peu éparpillée, 4 lycées sur 3 villes, alors la logistique fut un vrai défi, mais les heures passées tous ensemble dans ce petit laboratoire d’idées qu’était devenu mon salon nous laissent à tous des souvenirs mémorables, des conjectures très belles mais totalement fausses aux idées de génie que personne à part leur auteur ne comprend on a tout eu, et on a eu besoin de tout ! Mais le point innovant au TFJM, c’est qu’on présente ce qu’on fait, on en débat avec les autres équipes et avec le jury, on avance, généralement, il n’y a pas de solution parfaite et définitive, on a donc l’occasion de confronter nos idées. Ce fut donc pour moi une expérience très positive, que je referais à l’occasion, dommage que j’ai passé l’âge…
+    </p>
+    </div>
+    
+   </li>
+  </ul>
+    
+
+  <h3>Edition 2013</h3>
+
+  <ul class="liste">
+   <li>
+    <BLOCKQUOTE class="quote">
+    « Ce fut l’occasion de découvrir ce qu’était la recherche en maths et de travailler de manière approfondie sur un problème ouvert[...] 
+     L’ITYM fut une expérience inoubliable pour rencontrer des jeunes d’autres pays et échanger aux niveaux scientifique et amicaux.» 
+    <br>
+    <CITE>Vincent Bouis - TFJM et ITYM 2013 (équipe Orsay 3 puis France 2)</CITE>
+    </BLOCKQUOTE>
+
+    <p class="infor">Témoignage complet:</p>
+    
+    <div class="openbig">
+    <br>
+    
+     <ul class="liste2">
+      <li> <p class="puce">Peux tu te présenter en quelques mots ?</p>
+      Je m’appelle Vincent Bouis, j’ai 15 ans et je passe en première S à la rentrée prochaine au lycée Hugues Capet à Senlis.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Depuis quand t’intéresses-tu aux maths ?</p>
+      J’ai toujours bien aimé les maths. Cependant je m’y suis intéressé plus particulièrement depuis le stage de Montpellier en 2012 que j’ai connu grâce au concours Kangourou. Depuis j’ai eu l’occasion de participer à l’Olympiade Française de Mathématique, et d’aller le samedi au club d’Orsay. J’ai participé aux stages organisés par Animath à Cachan à la Toussaint 2012 et en mars 2013.
+
+      Cette année j’ai été qualifié pour les JBMO et pour l’ITYM, organisés respectivement à Antalya (Turquie) fin juin, et à Iasi (Roumanie) quelques jours plus tard.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Pourquoi avoir participé à l’ITYM ?</p>
+      Le club d’Orsay présente chaque année une ou plusieurs équipes au TFJM² (Tournoi Français des Jeunes Mathématiciennes et Mathématiciens). Nous avons donc formé une équipé avec des membres du club d’Orsay. Nous nous connaissions pratiquement tous grâce aux stages organisés par Animath. Nous avons été qualifiés au TFJM² pour aller à l’ITYM en Roumanie. Ce fut l’occasion de découvrir ce qu’était la recherche en maths et de travailler de manière approfondie sur un problème ouvert. Finalement, après beaucoup de travail (et de parties de mao), nous avons gagné le 5e ITYM avec une très grande fierté partagée par tous les membres de l’équipe (lycéens et team leaders). [...] Le fait de partager notre victoire en équipe était très riche humainement. L’ITYM fut une expérience inoubliable pour rencontrer des jeunes d’autres pays et échanger aux niveaux scientifique et amicaux. [...]
+      </li>
+      <br>
+      
+      <li> <p class="puce">As-tu d’autres passions ?</p>
+      Je joue de la clarinette depuis l’âge de 6 ans et je joue dans un orchestre d’harmonie depuis plusieurs années. Dès que j’en ai l’occasion je fais des stages de musique dans des orchestres symphoniques. Je fais également un peu de judo.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Quels sont tes projets pour l’avenir ?</p>
+      Pour l’instant, j’espère pouvoir intégrer une prépa scientifique (si possible à Louis le Grand) pour ensuite rejoindre une grande école (ENS, Polytechnique, ...). Mes projets ne sont pas très précis mais avec ces dernières expériences, je voudrais exercer un métier en rapport avec les maths (recherche éventuellement).
+      </li>
+
+     </ul>
+
+    </div>
+
+   </li>
+   
+   <li>
+    <BLOCKQUOTE class="quote">
+    « Sur le plan mathématique, cette expérience m’a apporté de nombreuses connaissances en lien avec le problème que je traitais (un problème de topologie), mais aussi sur de nombreux autres sujets [...] 
+    C’est indéniablement un plus dans mes études futures, tant au niveau des connaissances qu’au niveau de la rédaction et de la formulation d’un raisonnement scientifique.» 
+    <br>
+    <CITE>Basile Morando - TFJM et ITYM 2013 (équipe Strasbourg puis France 3)</CITE>
+    </BLOCKQUOTE>
+
+    <p class="infor">Témoignage complet:</p>
+    
+    <div class="openbig">
+    <br>
+     <ul class="liste2">
+      <li> <p class="puce">Peux tu te présenter en quelques mots ?</p>
+      Je m’appelle Basile Morando, j’ai 15 ans et je rentre en terminale S au lycée Marie Curie à Strasbourg.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Depuis quand t’intéresses-tu aux maths ?</p>
+      Je me suis toujours intéressé aux mathématiques, de par mon père, lui même professeur de mathématiques. J’ai ainsi découvert cette année le cercle de mathématiques de l’IRMA à Strasbourg, un club ayant entre autre comme objectif de former une équipe pour le TFJM.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Pourquoi avoir participé à l’ITYM ?</p>
+      C’est donc par l’intermédiaire de ce club que j’ai participé au TFJM à Paris, durant le week-end de Pentecôte. Mon équipe est arrivée cinquième, ce qui ne lui permettait pas de participer à l’ITYM en principe. Cependant, les organisateurs du TFJM ont décidé, peu après le tournoi, d’envoyer à l’ITYM une troisième équipe, composée de membres de plusieurs équipes du TFJM. C’est ainsi que je me suis fait proposer une place dans cette équipe, qui comportait deux membres de Paris, trois de Nantes, ainsi qu’un autre de Strasbourg. Nous sommes donc partis, accompagnés de l’encadrant du cercle de math de Strasbourg, à cette cinquième édition de l’ITYM, où nous avons obtenu un troisième prix.    Le club d’Orsay présente chaque année une ou plusieurs équipes au TFJM² (Tournoi Français des Jeunes Mathématiciennes et Mathématiciens). Nous avons donc formé une équipé avec des membres du club d’Orsay. Nous nous connaissions pratiquement tous grâce aux stages organisés par Animath. Nous avons été qualifiés au TFJM² pour aller à l’ITYM en Roumanie. Ce fut l’occasion de découvrir ce qu’était la recherche en maths et de travailler de manière approfondie sur un problème ouvert. Finalement, après beaucoup de travail (et de parties de mao), nous avons gagné le 5e ITYM avec une très grande fierté partagée par tous les membres de l’équipe (lycéens et team leaders). [...] Le fait de partager notre victoire en équipe était très riche humainement. L’ITYM fut une expérience inoubliable pour rencontrer des jeunes d’autres pays et échanger aux niveaux scientifique et amicaux. [...]
+      </li>
+      <br>
+      
+      <li> <p class="puce">Que t’a apporté ton expérience au TFJM/ITYM sur le plan des maths ?</p>
+      Sur le plan mathématique, cette expérience m’a apporté de nombreuses connaissances en lien avec le problème que je traitais (un problème de topologie), mais aussi sur de nombreux autres sujets, par l’intermédiaire des solutions des équipes adverses que nous devions relire. C’est indéniablement un plus dans mes études futures, tant au niveau des connaissances qu’au niveau de la rédaction et de la formulation d’un raisonnement scientifique.    Outre les mathématiques, je m’intéresse aussi beaucoup à la physique et à l’astronomie. D’autre part, je suis pianiste, ce qui monopolise une grande partie de mon temps, j’écoute beaucoup de musique, et lis autant que possible.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Et plus généralement ?</p>
+      Cela m’a aussi permis de faire de nombreuses rencontres, tout d’abord de mon équipe de l’ITYM, que j’ai rencontré pour la première fois à l’aéroport, mais aussi particulièrement des autres participants français à ce tournoi, les trois équipes françaises étant assez proches à ce tournoi    Outre les mathématiques, je m’intéresse aussi beaucoup à la physique et à l’astronomie. D’autre part, je suis pianiste, ce qui monopolise une grande partie de mon temps, j’écoute beaucoup de musique, et lis autant que possible.
+      </li>
+      <br>
+      
+      
+      <li> <p class="puce">As-tu d’autres passions ?</p>
+      Outre les mathématiques, je m’intéresse aussi beaucoup à la physique et à l’astronomie. D’autre part, je suis pianiste, ce qui monopolise une grande partie de mon temps, j’écoute beaucoup de musique, et lis autant que possible.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Quels sont tes projets pour l’avenir ?</p>
+      Pour l’instant, je me concentre sur mon année de terminale, durant laquelle j’espère pouvoir participer à l’édition 2014 du TFJM, et pourquoi pas de l’ITYM. 
+
+      Ensuite, je pense faire rentrer dans une MPSI, sans savoir précisément encore quel métier je souhaite pratiquer. Pour l’instant, j’espère pouvoir intégrer une prépa scientifique (si possible à Louis le Grand) pour ensuite rejoindre une grande école (ENS, Polytechnique, ...). Mes projets ne sont pas très précis mais avec ces dernières expériences, je voudrais exercer un métier en rapport avec les maths (recherche éventuellement).
+      </li>
+
+     </ul>
+
+    </div>
+    
+   </li>
+   
+   <li>
+    <BLOCKQUOTE class="quote">
+    «  J’ai eu le plaisir de rencontrer d’autres lycéens qui partageaient le même intérêt que moi pour les mathématiques. 
+    Mais aussi, j’ai pu rencontrer plusieurs mathématiciens de profession, avec qui j’ai pu discuter et en apprendre un peu plus sur ce métier.» 
+    <br>
+    <CITE>Pierre Popineau - TFJM et ITYM 2013 (équipe Tours puis France 1)</CITE>
+    </BLOCKQUOTE>
+
+    <p class="infor">Témoignage complet:</p>
+    
+    <div class="openbig">
+    <br>
+    
+     <ul class="liste2">
+      <li> <p class="puce">Peux tu te présenter en quelques mots ?</p>
+      Je m’appelle Pierre Popineau, j’ai 17 ans et je rentre en MPSI au lycée Descartes de Tours
+      </li>
+      <br>
+      
+      <li> <p class="puce">Depuis quand t’intéresses-tu aux maths ?</p>
+      J’ai eu le "déclic" l’année dernière, quand j’ai eu M. Goisque (qui est aussi le Team Leader de l’équipe France 1 à l’ITYM) en professeur de mathématiques. C’est à ce moment que j’ai commencé réellement à m’intéresser aux mathématiques, en participant notamment aux olympiades académiques de mathématiques, au concours général et à quelques autres épreuves comme le concours Kangourou ou encore le concours Lewis Carroll.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Pourquoi avoir participé à l’ITYM ?</p>
+      L’idée m’a tout de suite séduit. J’avais déjà entendu parler de la victoire de l’équipe du lycée Descartes l’année dernière au TFJM, et je me suis intéressé à l’avancement des travaux de cette équipe tout au long de l’année. Quand on m’a proposé de faire partie de l’équipe cette année, j’ai sauté sur l’occasion : pouvoir chercher sur des problèmes ouverts, par moi-même, sur des sujets nouveaux, c’était exactement ce que je voulais faire. Alors, quand notre équipe est arrivée première au TFJM² (qui nous offre une qualification directe à l’ITYM), j’étais assez impatient de participer au tournoi international afin de se mesurer à d’autres grandes nations des mathématiques.    Le club d’Orsay présente chaque année une ou plusieurs équipes au TFJM² (Tournoi Français des Jeunes Mathématiciennes et Mathématiciens). Nous avons donc formé une équipé avec des membres du club d’Orsay. Nous nous connaissions pratiquement tous grâce aux stages organisés par Animath. Nous avons été qualifiés au TFJM² pour aller à l’ITYM en Roumanie. Ce fut l’occasion de découvrir ce qu’était la recherche en maths et de travailler de manière approfondie sur un problème ouvert. Finalement, après beaucoup de travail (et de parties de mao), nous avons gagné le 5e ITYM avec une très grande fierté partagée par tous les membres de l’équipe (lycéens et team leaders). [...] Le fait de partager notre victoire en équipe était très riche humainement. L’ITYM fut une expérience inoubliable pour rencontrer des jeunes d’autres pays et échanger aux niveaux scientifique et amicaux. [...]
+      </li>
+      <br>
+      
+      <li> <p class="puce">Que t’a apporté ton expérience au TFJM/ITYM sur le plan des maths, et plus généralement ?</p>
+      Beaucoup de choses : j’ai eu le plaisir de rencontrer d’autres lycéens qui partageaient le même intérêt que moi pour les mathématiques. Mais aussi, j’ai pu rencontrer plusieurs mathématiciens de profession, avec qui j’ai pu discuter et en apprendre un peu plus sur ce métier. Également, j’ai pu découvrir un autre domaine des mathématiques, qui s’apparente à la recherche et qui est assez éloigné de ce qu’on fait en cours. J’ai ainsi acquis beaucoup de connaissances. Et puis, visiter un autre pays (la Roumanie) et discuter avec des étudiants qui viennent de toute l’Europe (et de Chine) était très enrichissant, et je me suis bien amusé (mon passage préféré était l’improvisation d’un numéro de danse avec l’équipe bulgare).    À part les mathématiques, je m’intéresse à l’astronomie (je suis abonné à une revue et je reste informé des dernière nouvelles sur les sites de la NASA et de l’ESA), et j’aime lire des livres (principalement de la science-fiction). Quand il fait suffisamment beau, il m’arrive de prendre un vélo et de faire de la photographie sur les bords de la Loire, près de Tours.    Je joue de la clarinette depuis l’âge de 6 ans et je joue dans un orchestre d’harmonie depuis plusieurs années. Dès que j’en ai l’occasion je fais des stages de musique dans des orchestres symphoniques. Je fais également un peu de judo.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Un conseil pour les futurs participants ?</p>
+      Ce tournoi nécessite beaucoup d’investissement. Cependant, il faut toujours garder une bonne ambiance dans l’équipe, afin de pouvoir toujours être au meilleur niveau : une équipe unie et qui s’entend bien ne sera que plus efficace.    L’idée m’a tout de suite séduit. J’avais déjà entendu parler de la victoire de l’équipe du lycée Descartes l’année dernière au TFJM, et je me suis intéressé à l’avancement des travaux de cette équipe tout au long de l’année. Quand on m’a proposé de faire partie de l’équipe cette année, j’ai sauté sur l’occasion : pouvoir chercher sur des problèmes ouverts, par moi-même, sur des sujets nouveaux, c’était exactement ce que je voulais faire. Alors, quand notre équipe est arrivée première au TFJM² (qui nous offre une qualification directe à l’ITYM), j’étais assez impatient de participer au tournoi international afin de se mesurer à d’autres grandes nations des mathématiques.    Le club d’Orsay présente chaque année une ou plusieurs équipes au TFJM² (Tournoi Français des Jeunes Mathématiciennes et Mathématiciens). Nous avons donc formé une équipé avec des membres du club d’Orsay. Nous nous connaissions pratiquement tous grâce aux stages organisés par Animath. Nous avons été qualifiés au TFJM² pour aller à l’ITYM en Roumanie. Ce fut l’occasion de découvrir ce qu’était la recherche en maths et de travailler de manière approfondie sur un problème ouvert. Finalement, après beaucoup de travail (et de parties de mao), nous avons gagné le 5e ITYM avec une très grande fierté partagée par tous les membres de l’équipe (lycéens et team leaders). [...] Le fait de partager notre victoire en équipe était très riche humainement. L’ITYM fut une expérience inoubliable pour rencontrer des jeunes d’autres pays et échanger aux niveaux scientifique et amicaux. [...]
+      </li>
+      <br>
+      
+      <li> <p class="puce">As-tu d’autres passions ?</p>
+      À part les mathématiques, je m’intéresse à l’astronomie (je suis abonné à une revue et je reste informé des dernière nouvelles sur les sites de la NASA et de l’ESA), et j’aime lire des livres (principalement de la science-fiction). Quand il fait suffisamment beau, il m’arrive de prendre un vélo et de faire de la photographie sur les bords de la Loire, près de Tours.    Je joue de la clarinette depuis l’âge de 6 ans et je joue dans un orchestre d’harmonie depuis plusieurs années. Dès que j’en ai l’occasion je fais des stages de musique dans des orchestres symphoniques. Je fais également un peu de judo.
+      </li>
+      <br>
+      
+      <li> <p class="puce">Quels sont tes projets pour l’avenir ?</p>
+      Après mes deux années de classe prépa, je vais essayer de rejoindre l’école normale supérieure (ce serait mon rêve), et ensuite, j’envisage de faire de la recherche dans le domaine mathématique.    Pour l’instant, j’espère pouvoir intégrer une prépa scientifique (si possible à Louis le Grand) pour ensuite rejoindre une grande école (ENS, Polytechnique, ...). Mes projets ne sont pas très précis mais avec ces dernières expériences, je voudrais exercer un métier en rapport avec les maths (recherche éventuellement).
+      </li>
+
+     </ul>
+
+    </div>
+  </ul>
+
+
+  <h3>Edition 2012/2011</h3>
+  <p class="infor2">
+  Quelques témoignages des participants, de professeurs ou de spectateurs du Tournoi 2011:
+  </p>
+  <div class="openbig">
+  <br>
+
+  <ul class="liste">
+    <li>
+      <BLOCKQUOTE class="quote">
+      « J’ai trouvé que le TFJM était une expérience très enrichissante car je n’avais jamais fait de maths de cette manière. C’était très intéressant de travailler en groupe, de trouver des solutions d’abord, mais aussi de lire celles des autres équipes, de les étudier et de faire un rapport. L’ambiance était très sympathique, dommage qu’il n’y ait pas eu plus de participants. En tout cas c’était très motivant et ça m’a donné encore plus envie de continuer à faire des maths. »
+      <br>
+      <CITE>Sarah Fachada-Dury (Cercle mathématique de Strasbourg))</CITE>
+      </BLOCKQUOTE>
+    </li>
+
+    <li>
+      <BLOCKQUOTE class="quote">
+      « Je tiens à remercier toute l’équipe organisatrice de m’avoir donné l’occasion de participer à cette expérience.
+
+      Enseignant en sup depuis de longues années je ne m’intéressais guère aux compétitions mathématiques que je trouvais artificielles et trop spécialisées. Celle ci, par son mode de déroulement et le travail en équipe qu’elle induit m’a fait complètement changer d’avis. Nous avons travaillé dans des conditions de confiance rares et avec un enthousiasme revigorant. Les organisateurs ne pensaient peut être pas aux classe de CPGE mais, de fait, les problèmes étaient riches et assez naturels pour que les étudiants puissent les explorer avec une grande autonomie et une vigueur que je leur envie. Nous en avons tous tiré un grand profit.
+
+      Je serais certainement partant pour un nouveau tour l’année prochaine.
+
+      Merci encore »
+      <br>
+      <CITE>Rémy Nicolaï (professeur MPSI, lycée Hoche)</CITE>
+      </BLOCKQUOTE>
+    </li>
+
+    <li>
+      <BLOCKQUOTE class="quote">
+      « Eh bien... que dire de ce tournoi, sinon que c’était une expérience absolument fantastique que de côtoyer des grands chercheurs et (espérons-le !) de futurs grands chercheurs sur des problèmes d’un tout autre niveau !
+
+      Ne serait-ce qu’en voyant le plaisir évident que prenait tout le monde à travailler sur ces problèmes et à les exposer aux autres, et le plaisir que moi-même j’ai éprouvé en participant à ce tournoi, a suffit à dissiper quasiment tous mes doutes quant à ma vocation de chercheur. Je vais définitivement continuer à travailler sur les problèmes et rester au courant des évolutions des autres équipes.
+
+      Je ne regrette absolument pas d’être venu, et je pense que quiconque qui aime les maths un tant soit peu se doit de travailler sur ses problèmes et se rendre à Orsay.
+
+      Merci beaucoup pour l’organisation du TFJM »
+
+      <br>
+      <CITE>Samuel MacKeown (MPSI, lycée Hoche)</CITE>
+      </BLOCKQUOTE>
+    </li>
+
+    <li>
+      <BLOCKQUOTE class="quote">
+      « Venue de Strasbourg, et n’ayant jamais participé à une épreuve de ce genre, je ne savais pas trop à quoi m’attendre en arrivant au tournoi des jeunes mathématiciens. Pourtant, ce n’était pas simplement la curiosité qui me poussait à Orsay, mais aussi le plaisir des faire des mathématiques. Au départ je pensais surtout que ce serait amusant, bien entendu ce fut le cas, mais je ne m’attendais pas à en apprendre autant. Plus qu’instructif, il s’agit d’une véritable expérience de s’exprimer en public, et présenter des solutions. Mais ce que j’ai préféré, - à part jouer aux cartes avec les autres participants - c’était de pouvoir lire leurs solutions, et en les comprenant, de découvrir des stratégies mathématiques qui m’étaient jusque là inconnues. C’est une aventure que je referai sans hésiter, si je le pouvais.
+
+      Encore merci pour l’encadrement du TFJM, je n’oublierai jamais ce week-end mathématique ! »
+      <br>
+      <CITE>Mercedes Haiech (Cercle mathématique de Strasbourg)</CITE>
+      </BLOCKQUOTE>
+    </li>
+
+    <li>
+      <BLOCKQUOTE class="quote">
+      « Le TFJM furent une expérience enrichissante. C’est à ma connaissance le seul tournoi français de ce type (tout comme l’ITYM), et le travail se fait selon ses envies, ses idées et à son rythme. Les problèmes sont variés et stimulants, quoique durs : cela nous force à approfondir nos réflexions beaucoup plus loin que ce qu’on pourrait penser ! Mais le plus intéressant, après la préparation, est l’épreuve : il ne s’agit pas, comme je le croyais à tort au début, de montrer que les autres ont tort ou qu’il y a systématiquement mieux pour résoudre les problèmes, mais au contraire il faut savoir reconnaitre l’élégance d’une solution et la qualité des outils employés, quitte à suggérer des méthodes pour améliorer ces points. C’est un travail de recherche avec une présentation notée, mais j’eus le tort d’oublier que les notes sont ici secondaires : autant s’amuser, dans la recherche ou dans l’exposé, et savoir que nous sommes ici pour résoudre les problèmes avec les autres et non pour démontrer que les autres solutions sont mauvaises. De plus, les encadrants et organisateurs firent un travail formidable en restant toujours à l’écoute des équipes, et je leur en suis très reconnaissant. »
+      <br>
+      <CITE>Luc Lehéricy, (MPSI, lycée Hoche)</CITE>
+      </BLOCKQUOTE>
+    </li>
+  </ul>
+
+  </div>
+
+
+{% endblock %}
+
+
+
+{% block sidebar %} 
+
+{% endblock %}

@@ -1,0 +1,17 @@
+
+Bonjour {{ prenom }}!
+
+Vous recevez ce message automatisé car vous êtes organisateur d'un des tournois du TFJM2. Veuillez trouver ci-dessous vos informations d'utilisateur pour le site officiel des inscriptions. Elles vous permettront de gérer les inscriptions des équipes de votre t
+
+Votre nom d'utilisateur est {{ username }} and votre mot de passe 
+
+{{ password }}
+
+Lors de votre prochaine connexion, vous serez invité à changer ce mot de passe:
+
+https://tfjm2-inscription.herokuapp.com/connexion
+
+Merci de votre aide !
+
+- Les organisateurs du TFJM2 -
+

@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% load bootstrap %}
+{% load static from staticfiles %}
+
+
+{% block navbar %}
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+
+	</div>
+{% endblock %}
+
+{% block menu %}
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li class="active"><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if equipe.inscription_validee == '0' %}
+
+	{% if equipe.inscription_ouverte == '1' %}
+
+		<h2>Equipe {{ equipe.nom_equipe }}</h2>
+
+		<div class="alert alert-info">Veuillez saisir les informations demandées pour chacun des membres de votre équipe. Une fois que tous les formulaires seront remplis, un bouton apparaîtra en bas de page pour valider ces informations.
+		Date limite d'inscription : {{ tournoi.date_limite }}</div>
+
+		<div class="alert alert-warning"><b>Votre inscription ne sera prise en compte qu'après la validation des informations</b>.
+		Attention ! Une fois ces informations validées, vous ne pourrez plus les modifier.</div>
+
+		<div class="alert alert-info">Si vous voulez modifier le nombre d'encadrants et/ou de participants de votre équipe, allez sur la rubrique "Mon Compte"</div>
+
+
+
+
+		{% if limite_inscription %}
+
+			<h3>Encadrants</h3>
+				<ul>
+					{% for p in encadrants %}
+
+						<li>
+
+							<a href="{% url 'inscription.views.encadrant' indice=p.indice %}"> {{ p.nom }}</a>:
+
+							{% if p.inscription_complete == '1' %}
+								<center>
+									<p class="bg-success">Inscription complète</p>
+								</center>
+							{% else %}
+								<center>
+									<p class="bg-warning"> Inscription non complète</p>
+								</center>
+							{% endif %}
+
+						</li>
+
+					{% endfor%}
+				</ul>
+
+			<h3>Eleves</h3>
+				<ul>
+					{% for p in eleves %}
+						<li>
+							<a href="{% url 'inscription.views.eleve' indice=p.indice %}"> {{ p.nom }}</a>:
+
+							{% if p.inscription_complete == '1'%}
+								<center>
+									<p class="bg-success">Inscription complète</p>
+								</center>
+							{% else %}
+								<center>
+									<p class="bg-warning"> Inscription non complète</p>
+								</center>
+							{% endif %}
+
+						</li>
+					{% endfor%}
+				</ul>
+
+			{% if equipe.inscription_complete == '1' %}
+				<br>
+				<p class="text-info">Cliquez sur ce bouton pour vous s'inscire. Vous ne pourrez plus modifier vos informations une fois que vous avez appuyé.</p>
+
+				<form action="{% url "inscription.views.mon_equipe"%}" method="post">
+				    {% csrf_token %}
+					<input type="submit" class="btn btn-primary" value="S'inscrire" />
+				</form>
+			{% endif %}
+
+		{% else %}
+
+			<p class="bg-danger">La date limite est passée.</p>
+
+		{% endif %}
+
+	{% else %}
+
+		<p class="text-info">Votre inscription est en cours d'étude. Dès que l'organisateur du Tournoi aura validé votre inscription, vous recevrez un email vous prévenant que vous pouvez continuer votre inscription.</p>
+
+	{% endif %}
+
+{% elif equipe.inscription_validee == '1' %}
+
+	{% if equipe.autorisations_completees == '0' %}
+
+		{% if limite_inscription_def %}
+
+			<h2>Equipe {{ equipe.nom_equipe }} </h2>
+			<div class="alert alert-info">Date limite pour les autorisations: {{ tournoi.date_limite_def }} </div>
+
+			<div class="alert alert-info">Télécharger et compléter les fichiers ci-dessous avant de les joindre au dossier de chaque élève. </div>
+				<ul>
+
+						<li><a href="{% static 'inscription/autorisations/Fiche_sanitaire.pdf' %}"> Fiche Sanitaire de Liaison </a></li>
+						<li><a href="{% static 'inscription/autorisations/Autorisation_photo.pdf' %}"> Autorisation de reproduction et de représentation de prises de vue </a></li>
+						<li><a href="{% static 'inscription/autorisations/Autorisation_parentale.pdf' %}"> Autorisation parentale pour les mineurs </a></li>
+				</ul>
+					<h3>Eleves</h3>
+						<ul>
+							{% for p in eleves %}
+								<li>
+									<a href="{% url 'inscription.views.autorisations' indice=p.indice %}"> {{ p.nom }}</a>:
+
+									{% if p.autorisations_completees == '1' %}
+										<center>
+											<p class="bg-success">Autorisations complètes</p>
+										</center>
+									{% else %}
+										<center>
+											<p class="bg-warning">Autorisations non complètes</p>
+										</center>
+
+									{% endif %}
+
+									{% if p.paiement_valide == '1' %}
+										<center>
+											<p class="bg-success">Paiement complet</p>
+										</center>
+									{% else %}
+										<center>
+											<p class="bg-warning">Paiement non complet</p>
+										</center>
+									{% endif %}
+
+								</li>
+							{% endfor%}
+						</ul>
+		{% else %}
+
+			<p class="bg-danger">La date limite est passée.</p>
+
+		{% endif %}
+
+	{% else %}
+
+		<p class="bg-success">Vous avez finalisé votre inscription.</p>
+
+	{% endif %}
+
+{% elif equipe.inscription_validee == '2' %}
+	<center>
+		<p class="bg-danger">Votre sélection a été annulée.</p>
+	</center>
+{% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,73 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TFJM2</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'inscription/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'inscription/css/custom.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container" style="background-color:lavender;">
+
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-md-1">
+    </div>
+
+    <div class="col-md-10" style="background-color:lavenderblush;">
+      <h2>Changement de mot de passe</h2>
+      <br>
+      <br>
+
+      {% if mdp_court == 1 %}
+          <div class="alert alert-warning fade in">
+            Le mot de passe doit contenir au moins 8 caractéres!
+          </div>
+      {% endif %}
+
+
+    {% if error %}:
+      <div class="alert alert-warning fade in">
+      Il y a une erreur dans votre saisie.
+      </div>
+    {% endif %}
+
+    {% if envoi %}
+      <div class="alert alert-success fade in">
+        Vous avez bien changé votre mot de passe.
+        Veuillez vous <a href="{% url "inscription.views.connexion" %}">reconnecter.</a>
+      </div>
+    {% endif %}
+
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Modifier" />
+      </form>
+
+      <br>
+      <a href="{% url 'inscription.views.home' %}"  class="btn btn-default" role="button" >Retour au site</a>
+      <br>
+      <br>
+    </div>
+
+
+    <div class="col-md-1">
+    </div>
+
+  </div>
+
+  <br>
+  <br>
+
+</div>
+
+</body>
+</html>

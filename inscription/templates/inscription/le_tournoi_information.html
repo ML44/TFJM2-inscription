@@ -1,0 +1,187 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li class="active"><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+  <h2>Informations</h2>
+   <p class="information">
+
+    Le TFJM est une compétition par équipe de 4 à 6 lycéens. 
+    Chaque équipe est accompagnée d'un ou deux encadrants, des professeurs de mathématiques, des doctorants ou encore d'anciens participants.  
+    <br>
+    A partir de 2015, le TFJM se composera d'un tournois régional, qui aura lieu le temps d'un week-end fin mars, puis les meilleures équipes de chaque région seront invitées à participer à la finale nationale en mai.
+   </p>
+   <h2> Tournoi régional </h2>
+   <h3> Phase I </h3>
+
+   <h4> Les problèmes </h4>
+   
+   <p class="information">
+   
+    Les élèves travaillent sur une série de problèmes mathématiques qui seront publiés mi-janvier. 
+    Il s'agit de problèmes difficiles qui touchent plusieurs domaines du vaste monde des mathématiques.
+     Pour plus d'informations concernant les problèmes, visitez la rubrique <a href="https://sites.google.com/a/tfjm.org/www/problemes">problèmes</a> <!-- renvoyer à la rubrique-->
+    Pendant les deux mois précédant la rencontre, les équipes travaillent avec leurs encadrants et cherchent des solutions à ces problèmes.
+    Certaines connaissances techniques spécifiques dépassant les programmes de mathématiques au lycée sont nécessaires
+    pour avancer dans la recherche des solutions. 
+    Les encadrants peuvent alors enseigner ces connaissances aux élèves à leur demande.
+    
+   </p>
+   
+   <h4> Rédaction et envoi des solutions </h4>
+
+   <p class="information">
+    Lorsque la date limite d'envoi des solutions approche, les élèves entament la phase de rédaction : 
+    il s'agit de mettre par écrit tout ce qui a été trouvé et de façon très claire. 
+    C'est un travail assez long qui nécessite de nombreuses relectures. 
+    Les élèves font attention à ce que toute source, quelle que soit sa nature, électronique ou matérielle (livres, articles...) directement reliée aux démonstrations soit citée. 
+    Ces solutions écrites doivent être envoyées par mail aux organisateurs avant le début du tournoi régional. 
+    
+   </p>
+   
+   
+   <h3> Phase II </h3>
+
+   
+   <p class="information">
+     Les équipes se rencontreront lors d'un week-end fin mars (voir <a href="http://www.tfjm.org/Inscription">inscriptions</a> pour les dates).
+    Pendant ce week-end, à deux reprises elles seront confrontées à un jury par poules de 3 ou 4 équipes.
+    La composition des poules ainsi que les problèmes présentés auront préalablement été tirés au sort. 
+   </p>
+   
+   <h4> Les rôles </h4>
+   
+   <p class="information">
+    Lorsque les équipes se rencontrent, chaque phase se déroule sous forme d’un débat autour d'un des problèmes proposés. Chaque équipe joue successivement les roles suivants:
+    <ul class="liste">
+     <li>Le <b>défenseur</b> présente les idées et résultats principaux obtenus par l'équipe.</li>
+     
+     <li>L’<b>opposant </b>fournit une analyse critique de la solution et de la présentation orale du défenseur, 
+      y indiquant les erreurs ou imprécisions, aussi bien que ses points forts.</li>
+      
+     <li>Le <b>rapporteur</b> évalue le débat entre le défenseur et l’opposant, en indiquant les aspects positifs et 
+      négatifs de la prestation de chacun. Une tâche importante du rapporteur est de déceler un manquement de l’opposant : 
+      soit qu’il ait commis une erreur, soit qu’il n’ait pas indiqué une erreur du défenseur.</li>
+      
+     <li>L’<b>observateur</b> s’exprime s’il a une remarque utile à faire, par exemple lorsqu’un élément important n’a pas été évoqué. 
+      Il n’a pas vocation à participer au débat.</li>
+    </ul>
+   </p>
+   
+   <p class="information">
+   
+    Avant chaque tour, l’opposant, le rapporteur et l’observateur rendent au jury une note de synthèse, d'une à deux pages, sur la solution du défenseur, 
+    indiquant des erreurs qu’ils ont pu déceler. Les auteurs doivent aussi fournir une évaluation critique du travail, 
+    attirant l’attention du jury sur les points positifs et négatifs. Ils peuvent enfin indiquer une appréciation globale de la solution.
+    <br />
+    A la fin de la rencontre, les résultats sont annoncés. <!--renvoi résultat--> <!-- nombre de jour ?-->
+    Les équipes reçoivent des cadeaux et des diplômes. Les deux meilleures équipes sont qualifiées pour partir au tournoi national.
+   
+   <h2> Tournoi national</h2>
+   
+   <p class="information">
+   Le tournoi national se déroule comme le tournoi régional mais sur quatre jous, du 14 au 17 mai 2015. Il aura lieu à l'École polytechnique, à Palaiseau.
+
+   </p>
+   
+   <h2> Annexe </h2>
+   
+   <h4> Réglement </h4>
+   
+   <p class="information">
+     Pour plus d'informations, vous pouvez lire le <a href="https://sites.google.com/a/tfjm.org/www/le-tournoi-1/reglement">règlement</a> complet (règlement 2015 à paraître mi-janvier).
+   </p>
+
+   <h4> Inscription </h4>
+   
+   <p class="information">
+    Une fois l'équipe constituée avec les encadrants, celle-ci s'inscrit en suivant la procédure d'inscription. <!-- renvoi à inscription -->
+   </p>
+
+{% endblock %}

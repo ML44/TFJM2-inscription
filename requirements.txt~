@@ -1,0 +1,15 @@
+diff-match-patch==20121119
+dj-database-url==0.3.0
+Django==1.8.4
+django-bootstrap-form==3.2
+django-bootstrap3-datepicker==0.3.1
+django-floppyforms==1.5.2
+django-import-export==0.2.8
+django-mail-templated==0.2.2
+django-random-filestorage==0.1.0
+psycopg2==2.6.1
+tablib==0.10.0
+wheel==0.24.0
+XlsxWriter==0.7.3
+zipstream==1.1.0
+django-storages

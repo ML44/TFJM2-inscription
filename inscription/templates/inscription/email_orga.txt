@@ -1,0 +1,12 @@
+
+
+Bonjour {{ orga }}
+
+L'équipe {{ neq }} a finalisé la pré-inscription.
+
+Veuillez confirmer son inscription au Tournoi en vous connectant dans la partie Validation
+
+Merci.
+
+
+

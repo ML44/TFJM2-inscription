@@ -1,0 +1,188 @@
+
+{% extends "base.html" %}
+
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li class="active"><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+
+{% block content %} 
+
+
+	<h2> Foire Aux Questions</h2>
+
+		<p>
+		Voici une sélection des questions fréquemment posées.
+		</p>
+
+	<h2>Y-a-t-il des prérequis à avoir ?</h2>
+
+		<p>
+		La plupart des problèmes peuvent être abordés avec des connaissances vu au lycée. 
+		Cependant les questions les plus difficiles peuvent nécessiter des outils <i>post-bac</i>. 
+		L'acquisition de nouvelles connaissances par les participants pour résoudre leurs problèmes fait parti de l'esprit du tournoi.
+		De plus, les encadrants sont présents pour aider les élèves à acquérier les connaissances nécessaires dans les cas <i>les plus difficiles</i>.
+		</p>
+
+
+
+	<h2>Ai-je le droit de me faire aider ?</h2>
+
+		<p>
+		Oui. Il est tout à fait autorisé d'obtenir de l'aide de la part des encadrants. C'est d'ailleurs le rôle même des encadrants: 
+		il s'agit en particulier d'apporter aux participants les connaissances mathématiques nécessaires lorsque ceux-ci le demandent. 
+		Cependant, il est important que les notions et les résultats utilisés dans les solutions soient entièrement maîtrisés par les participants.
+		Le jury peut interroger les participants sur ces notions.
+		</p>
+
+
+	<h2>Est-il nécessaire de traiter tous les problèmes ?</h2>
+
+		<p>
+		Non, lors des tirages au sort, il est possible de refuser jusqu'à <b>P-5</b> problèmes sans pénalité, 
+		où P est le nombre total de problèmes (voir règlement). <!-- renvoie au réglement-->
+		Il n'est donc pas nécessaire d'envoyer de solution écrite pour chacun des problèmes. 
+		</p>
+
+
+
+	<h2>Je ne suis pas au lycée, puis-je quand même participer ?</h2>
+
+		<p>
+		Non, le tournoi est réservé aux lycéens afin de préserver une homogénéité de niveau. 
+		Si vous êtes collégien, vous pourrez participer aux éditions suivantes et on espère vous y retrouver.
+		</p>
+
+		<p>
+		Si vous en avez d'autres, n'hésitez pas à nous contacter par email au <a href="mailto:secretariat@tfjm.org">secretariat@tfjm.org</a>, 
+		sur notre page <a href="https://www.facebook.com/TFJM2">facebook</a>. <!-- renvoyer au blog de l'accueil à installer d'ailleurs-->
+		</p>
+
+
+
+	<h2>Peut-on former une équipe avec des personnes qui ne sont pas dans le même lycée ?</h2>
+
+		<p>
+		Oui, c'est tout à fait possible. En revanche nous vous conseillons de conserver dans la mesure du possible une certaine
+		  proximité géographique pour de bonnes conditions de travail.
+		</p>
+		  
+
+	<h2>Je n'arrive pas à former une équipe, comment faire ?</h2>
+
+		<p>
+		Il est nécessaire de constituer une équipe de 4 à 6 personnes pour participer au tournoi.Il n'est pas nécessaire d'appartenir au même lycée.  
+		Si vous cherchez d'autres personnes pour former une équipe, parlez en autour de vous (amis, professeur de maths). 
+		Si vous ne trouvez pas, contactez nous, nous connaissons peut-être des gens intéressés dans votre région.
+		</p>
+		  
+
+
+
+
+	<h2>Comment rédiger les solutions?</h2>
+
+		<p>
+		La rédaction de solutions à des problèmes mathématiques est parfois très difficile à réaliser clairement et rapidement. 
+		C'est pourquoi nous vous conseillons de le rédiger en LaTeX. Toutefois, l'usage de LaTeX pour rédiger les solutions n'est bien entendu pas obligatoire. 
+		Cependant nous vous le conseillons vivement pour <em>sa clarté, sa précision et son gain de temps</em>.
+		Si vous n'avez jamais utilisé LaTeX, le logiciel LyX (<a href="http://www.lyx.org/">http://www.lyx.org/</a>)
+		permet de produire des documents sans connaissance préalable. 
+		On pourra par ailleurs consulter les cours de <a href="http://www.math.u-psud.fr/~bernardofpc/latex.php">Bernardo da Costa</a> ou 
+		encore le <a href="http://fr.wikibooks.org/wiki/LaTeX">WikiLivre</a> qui résume les bases de LaTeX.
+		</p>
+
+	  
+	<h2>Puis-je m'appuyer sur des livres et des articles ?</h2>
+
+		<p>
+		Oui. A l'instar d'un véritable travail de recherche, on pourra s'appuyer sur des travaux existants, en veillant toutefois à les citer <b>précisément</b> dans les solutions aux problèmes. 
+		Les participants doivent être en mesure de fournir une copie (numérique) des sources utilisées, si le jury le demande. 
+		Tout manquement sera considéré comme du plagiat et <b>sévèrement</b> sanctionné.
+		</p>
+
+
+{% endblock %}

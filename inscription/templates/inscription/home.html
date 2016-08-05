@@ -1,0 +1,171 @@
+
+{% extends "base.html" %}
+{% block navbar %}
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+
+	</div>
+{% endblock %}
+{% block menu %}
+	<li class="active"><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+
+
+{% block info %}
+{% if user.is_authenticated %}
+{% else %}
+<center>
+    <h3>Vous voulez participer ? <a href="{% url "inscription.views.inscription_equipe" %}">Inscrivez</a>-vous!</h3>
+    <h3><a href="{% url "inscription.views.connexion" %}">Connectez-vous</a> si vous avez déjà un compte.</h3>
+</center>
+{% endif%}
+
+{% endblock %}
+
+{% block content %}
+
+    <center>
+        <h2>Bienvenue sur le site d'inscription du TFJM<sup>2</sup> !</h2>
+    </center>
+
+<center>
+Ce site a été conçu pour gérer les inscriptions au Tournoi Français des Jeunes Mathématiciennes et Mathématiciens.
+<br>
+<a href="http://www.tfjm.org/">Cliquez ici pour accéder au site de présentation du tournoi.</a>
+</center>
+
+<br>
+
+
+
+<p class="text-danger"><strong>
+Important : la procédure de paiement des frais d'inscription est disponible. Vous pouvez y accéder en cliquant <a href="http://www.tfjm.org/Inscription">ici</a>.
+</strong>
+</p>
+
+
+<p align="justify"><strong>
+Attention aux deadlines !!! Chaque tournoi a une date limite pour les inscriptions et une date limite pour déposer vos solutions. Elles sont affichées avec les informations de chaque tournoi. Merci de vous y référer !
+<br>
+Une fois la deadline passée, le site bloque tout accès aux inscriptions (et respectivement au dépôt des solutions).</strong>
+</p>
+
+    <center>
+        <h2>Comment ça marche ?</h2>
+    </center>
+
+<p align="justify">
+	Pour participer à l'un des tournois régionaux, il suffit de créer un compte sur la rubrique <b>Inscription</b>. Il vous faudra une adresse email pour ce faire. Un mail de confirmation sera envoyé à cette adresse. Il vous fournira un nom d'utilisateur et un mot de passe que vous allez devoir changer par la suite.
+</p>
+
+<p>
+Vous pouvez accéder à votre compte via la rubrique <b>Connexion</b>. Une fois connecté, vous pourrez :
+	<ul>
+		<li>rentrer des informations sur les membres de votre équipe, tant participants qu'encadrants ;</li>
+		<li>enregistrer et télécharger des versions préliminaires de vos solutions (seulement la dernière version enregistrée avant 
+			la date limite sera prise en compte pour le tournoi).</li>
+	</ul>
+
+Une fois que vous aurez fourni toutes les informations demandées dans la rubrique <b>Mon Équipe</b>, votre inscription pourra être validée par les organisateurs locaux. 
+</p>
+
+
+<p class="text-danger">ATTENTION ! Votre équipe ne sera considérée comme admissible à participer au tournoi que lorsque cette première étape aura été franchie.</p>
+
+<p>Pensez donc à former une équipe complète (minimum 4 participants et 1 encadrant) le plus tôt possible pour avoir plus de chances de participer, compte tenu du nombre des places disponibles dans chaque tournoi (qui sera dûment affiché sur la rubrique <b>Liste des Tournois</b>). Les équipes restantes seront placées en liste d'attente.
+</p>
+
+<p>
+Pour les équipes dont l'inscription aura été validée, des documents à télécharger, remplir et signer deviendront disponibles sur votre compte. Vous allez devoir ensuite les scanner et télécharger vers le site pour compléter votre inscription. 
+</p>
+
+
+<p class="text-danger">ATTENTION ! Les équipes qui ne respecteront pas les délais pour rendre ces documents risquent d'être disqualifiées et de laisser leur place aux équipes placées en liste d'attente.</p>
+
+<p>
+<em><strong>NB :</strong> Ce site est récent et il est encore possible que certaines pages ne fonctionnent pas correctement. Si vous remarquez des bugs, merci de les signaler à l'adresse <a href="mailto:organisateurs@tfjm.org">organisateurs@tfjm.org</a>.</em>
+</p>
+
+
+
+		<!-- code facebook -->
+
+		<!-- liste des actualités -->
+
+
+{% endblock %}

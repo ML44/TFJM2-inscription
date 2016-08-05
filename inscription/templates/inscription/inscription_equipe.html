@@ -1,0 +1,204 @@
+
+
+{% load bootstrap %}
+
+{% load static from staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TFJM2</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'inscription/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'inscription/css/custom.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <style>
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+  }
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <link href="{% static 'inscription/css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+  <script src="{% static 'inscription/js/bootstrap.js' %}"></script>
+
+
+  {% block style %}
+  {% endblock %}
+  </style>
+</head>
+<body>
+
+
+<div class="container" style="background-color:#FFCFCF;">
+
+
+<div id="custom-bootstrap-menu" class="navbar navbar-default " role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header"><a class="navbar-brand" href="{% url "inscription.views.home" %}">TFJM<sup>2</sup></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-menubuilder">
+
+            <div>
+              <ul class="nav navbar-nav">
+
+                  {% block sidebar %}
+
+                  {% endblock %}
+
+              </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+                  <li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+                </ul>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+  </nav>
+
+
+  <div id="header">
+    <center>
+    <a href="http://www.tfjm.org/"><img src="{% static 'inscription/images/header.png' %}" alt="" width="720" height="160" /></a>
+  </center>
+  </div>
+
+  <br>
+
+
+  {% block info %}
+  {% endblock %}
+
+  <br>
+
+
+
+
+  <br>
+  <br>
+
+  <div class="row">
+
+  <div class="col-md-2">
+      <ul class="nav nav-pills nav-stacked ">
+         <br>
+
+
+{% block menu %}
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	<li class="active"><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+	<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+{% endblock %}
+
+
+      </ul>
+  </div>
+
+
+    <div class="col-md-9" style="background-color:#FE9191;">
+  <br>
+  <br>
+
+
+
+
+
+{% block content %}
+
+<h2>Inscription au TFJM<sup>2</sup></h2>
+    <div class="alert alert-warning fade in">
+      Nous avons remarqué quelques problèmes d'envoi des mails avec certaines boites, en particulier free et laposte. N'hésitez pas à nous contacter si vous ne recevez pas de message de confirmation.
+    </div>
+
+  {% if places_disponibles == 0 %}
+		<div class="alert alert-warning fade in">
+		  Ce tournoi n'accepte plus d'équipes.
+		</div>
+	{% endif %}
+
+
+	{% if user_pris == 1 %}
+		<div class="alert alert-warning fade in">
+		  Ce nom d'équipe est déja pris.
+		</div>
+	{% endif %}
+
+	{% if limite_inscription == 1 %}
+		<div class="alert alert-warning fade in">
+		  La date limite d'inscription à ce tournoi est passée.
+		</div>
+	{% endif %}
+
+	{% if email_pris == 1 %}
+		<div class="alert alert-warning fade in">
+		  Il existe déjà un compte avec cette adresse email.
+		</div>
+	{% endif %}
+
+	{% if error %}
+		<div class="alert alert-warning fade in">
+		  Il y a une erreur dans votre saisie.
+		</div>
+	{% endif %}
+
+  {% if caractere_probleme == 1 %}
+    <div class="alert alert-warning fade in">
+      Les caractères suivants sont interdits :  <center> ;    /    ?    :    @    &    =    +    $    , </center>
+    </div>
+  {% endif %}
+
+	{% if envoi %}
+		<div class="alert alert-success fade in">
+		  Un lien de validation a été envoyé à votre email. Pour valider votre inscription, veuillez cliquer sur ce lien, vous serez ensuite invité à choisir un mot de passe.
+		</div>
+	{% else %}
+
+		<form action="{% url "inscription.views.inscription_equipe"%}" method="post">
+			<legend>Formulaire d'inscription</legend>
+		    {% csrf_token %}
+		    {{ form_def|bootstrap }}
+		    {{ form|bootstrap }}
+		    <input type="submit" class="btn btn-primary" value="S'inscrire" />
+		</form>
+	{% endif %}
+
+
+{% endblock %}
+
+
+
+      <br>
+      <br>
+      <br>
+            <br>
+      <br>
+      <br>
+            <br>
+      <br>
+      <br>
+            <br>
+      <br>
+      <br>
+    </div>
+
+
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+
+{% extends "base.html" %}
+{% block navbar %} 
+	<div>
+	  <ul class="nav navbar-nav">
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Le Tournoi<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.tournoi_information" %}">Information</a></li>
+			<li><a href="{% url "inscription.views.programme" %}">Programme</a></li>
+			<li><a href="{% url "inscription.views.tournoi_documents" %}">Documents Officiels</a></li>
+			<li><a href="{% url "inscription.views.faq" %}">Foire Aux Questions(FAQ)</a></li>
+			<li><a href="{% url "inscription.views.jury" %}">Jury</a></li>
+			<li><a href="{% url "inscription.views.itym" %}">Tournoi International(ITYM)</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.liste_des_problemes" %}">Problèmes</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Edition précédentes<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.editions_precedentes_participants" %}">Participants</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_resultats" %}">Résultats</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_solutions" %}">Solutions écrites</a></li>
+			<li><a href="{% url "inscription.views.editions_precedentes_photos_et_videos" %}">Photos et vidéos</a></li>
+			<li><a href="{% url "inscription.views.temoignages" %}">Témoignage</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.concours_photo" %}">Concours Photo</a></li>
+		
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Soutenir le TFJM<span class="caret"></span></a>
+		  <ul class="dropdown-menu">												
+			<li><a href="{% url "inscription.views.soutenir_partenaires" %}">Nos Partenaires</a></li>
+			<li><a href="{% url "inscription.views.soutenir_partenaires_2014" %}">Nos Partenaires(2014)</a></li>
+			<li class="active"><a href="{% url "inscription.views.soutenir_comment" %}">Comment soutenir le TFJM ?</a></li>
+			<li><a href="{% url "inscription.views.presse" %}">Presse</a></li>
+		  </ul>
+		</li>
+		
+		<li><a href="{% url "inscription.views.contact" %}">Contact</a></li>
+	  </ul>
+	  
+	  {% if user.is_authenticated %}
+	  	<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.deconnexion" %}"><span class="glyphicon glyphicon-log-out"></span>Déconnexion</a></li>
+		</ul>
+	  {% else %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="{% url "inscription.views.connexion" %}"><span class="glyphicon glyphicon-user"></span>Connexion</a></li>
+			<li><a href="{% url "inscription.views.inscription_equipe" %}"><span class="glyphicon glyphicon-log-in"></span>Inscription</a></li>
+		</ul>
+	  {% endif %}
+	  
+	</div>
+{% endblock %}
+
+{% block menu %} 
+	<li><a href="{% url "inscription.views.home" %}">Accueil</a></li>
+	<li><a href="{% url "inscription.views.liste_des_tournois" %}">Liste des tournois</a></li>
+	{% if user.is_authenticated %}
+		{% if perms.inscription.organisateur %}
+			<li><a href="{% url "inscription.views.modifier_profil_organisateur" %}">Profil</a></li>
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.exportation" %}">Exportation de données</a></li>
+			<li><a href="{% url "inscription.views.validation" %}">Validation</a></li>
+			<li><a href="{% url "inscription.views.paiement" %}">Paiement</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.inscrit %}
+			<li><a href="{% url "inscription.views.mon_compte" %}">Mon Compte</a></li>
+			<li><a href="{% url "inscription.views.mon_equipe" %}">Mon Equipe</a></li>
+			<li><a href="{% url "inscription.views.problemes" %}">Mes Problèmes</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% elif perms.inscription.admin %}
+			<li><a href="{% url "inscription.views.liste_organisateur" %}">Les Organisateurs</a></li>
+			<li><a href="{% url "inscription.views.lire_permission" %}">Permissions</a></li>
+			<li><a href="{% url "inscription.views.mdp_admin" %}">Changer mot de passe</a></li>
+			<li><a href="{% url "inscription.views.log" %}">Log</a></li>
+			<li><a href="{% url "inscription.views.deconnexion" %}">Déconnexion</a></li>
+		{% else %}
+			<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+			<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+		{% endif %}
+	{% else %}
+		<li><a href="{% url "inscription.views.inscription_equipe" %}">Inscription</a></li>
+		<li><a href="{% url "inscription.views.connexion" %}">Connexion</a></li>
+	{% endif %}
+{% endblock %}
+		
+
+{% block content %} 
+
+<h2> Comment soutenir le TFJM ? </h2>
+    <p>
+    Le <em>TFJM</em> a besoin de votre aide pour survivre et s'agrandir.
+    <br>
+    En 2014, 33 équipes ont voulu s'inscrire au tournoi, nous n'avons pu en accueillir que 18.
+    <br>
+    Aidez-nous à augmenter le nombre d'équipes !
+    <br>
+    </p>
+
+    <h3>Vous êtes un particulier :</h3>
+    <p>
+    Vous pouvez soutenir financièrement le tournoi.
+    <br>
+    Rien de plus facile : il suffit de faire un don à Animath, l'association porteuse du tournoi, en spécifiant que ce don est pour le TFJM.
+    <br>
+    A partir de <a href="https://www.apayer.fr/ANIMATH">cette page</a>, vous pouvez effectuer un don sécurisé en ligne.
+    <br>
+    <b>Important</b> : remplissez le champ "référence" comme suit : <i>votreNom-donVolontaireTFJM</i>.
+    </p>
+
+    <h3>Vous êtes une entreprise :</h3>
+    <p>
+    Le TFJM est une action portée par l'association Animath, qui est éligible au régime des dons et 
+    du mécénat prévu par les dispositions des articles 200-1 et 238 bis du code général des impôts en faveur des organismes qui présentent un caractère éducatif et est donc habilitée à émettre des reçus fiscaux.  
+    <br>
+
+    Voici la marche à suivre si vous voulez nous apporter votre soutien :
+
+    <ol>
+    <li>Prendre contact avec nous en nous écrivant à <a href="mailto:contact-partenaires@tfjm.org" style="background-color:transparent;line-height:1.6">contact-partenaires@tfjm.org</a>.</li>
+    <li>2 possibilités :</li>
+    <ul>
+    <li>Soit nous émettons une simple facture.</li>
+    <li>Soit une convention entre l'entreprise et l'association (Animath) est signée, puis dans un second temps une facture est éditée.&nbsp;La convention permet de donner un cadre plus formel au soutien et de spécifier les contreparties (engagement sur l'utilisation de l'argent, impression du logo, mention du nom de l'entreprise, ...). <a href="https://sites.google.com/a/tfjm.org/www/files/convention.pdf?attredirects=0">Un exemple de convention.</a></li>
+    </ul>
+    <li>Animath émet un reçu fiscal que nous vous transmettons.</li>
+    </ol>
+    <br>
+    </p>
+
+{% endblock %}
+

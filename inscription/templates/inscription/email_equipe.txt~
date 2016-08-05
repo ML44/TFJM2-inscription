@@ -1,0 +1,13 @@
+
+Bonjour  Equipe {{ neq }} !
+
+Vous vous êtes inscrit au tournoi {{ tournoi }}.
+
+Votre nom d'utilisateur est {{ username }}.
+
+Veuillez cliquer sur le lien suivant pour confirmer votre inscription: {{ link }}
+
+
+Merci de votre participation !
+
+- Les organisateurs du TFJM2 -

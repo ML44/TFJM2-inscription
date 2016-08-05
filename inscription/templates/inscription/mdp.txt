@@ -1,0 +1,11 @@
+
+Bonjour {{ username }}!
+
+Vous avez oublié votre mot de passe. Veuillez cliquer sur le lien suivant afin de choisir un nouveau mot de passe:
+
+{{ link }}
+
+Merci de votre participation.
+
+- Les organisateurs du TFJM2-
+

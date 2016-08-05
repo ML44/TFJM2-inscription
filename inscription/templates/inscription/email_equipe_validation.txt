@@ -1,0 +1,11 @@
+
+Bonjour  Equipe {{ neq }} !
+
+Félicitations ! Vous avez été séléctionnés pour participer au tournoi de {{ tournoi }}. 
+
+Connectez-vous (rubrique "Mon Equipe") afin de télécharger les différents documents à être remplis et signés par vos responsables légaux, puis de les resoumettre sur le site. C'est une étape obligatoire pour pouvoir participer au tournoi.
+
+Merci de votre participation !
+
+- Les organisateurs du TFJM<sup>2</sup> -
+
